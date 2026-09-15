@@ -64,3 +64,10 @@ html[lang=zh-CN] .section-lettering-ready dialog:not([data-page=archive]) .page-
 html[lang=zh-CN] .section-lettering-ready dialog:not([data-page=archive]) .page-heading h2:after{content:'';position:absolute;inset:0;background:var(--section-white) left center/contain no-repeat}
 html[lang=zh-CN] .section-lettering-ready #reader.trail-reader .trail-heading h2{position:relative;width:clamp(140px,18vw,245px);height:clamp(44px,5.7vw,78px);font-size:0;color:transparent;text-shadow:none;transform:none}
 html[lang=zh-CN] .section-lettering-ready #reader.trail-reader .trail-heading h2:after{content:'';position:absolute;inset:0;background:var(--section-white) left center/contain no-repeat;filter:drop-shadow(3px 4px 0 #856ba442)}
+/* English display lettering stays playful; reading text stays clean. */
+:root{--reading:'Avenir Next','Segoe UI','PingFang SC',sans-serif}
+html[lang=en] .stage-copy h1{font-family:var(--hand);font-weight:700;letter-spacing:-.035em!important}
+html[lang=en] .portal-labels button{font-weight:700;font-size:clamp(14px,2.1cqw,30px);white-space:nowrap}
+html[lang=en] .quick-find,html[lang=en] .quick-find-panel button span,html[lang=en] .reader-nav button,html[lang=en] .page-heading h2,html[lang=en] #reader .trail-heading h2{font-family:var(--hand);font-weight:700}
+#pixel-cloud,#pixel-cloud p,#pixel-cloud small,#pixel-cloud button,.cave-title p{font-family:var(--reading)!important}
+#reader-content h3,#reader-content .scene-bubble h3,#reader-content .trail-card>header h2,#reader-content .bubble-top small,#reader-content .trail-catalog button{font-family:var(--reading)!important}
