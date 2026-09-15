@@ -42,3 +42,21 @@ export async function prepareLettering() {
     return false;
   }
 }
+
+// Use the same alpha-rendered brush artwork as the four existing portals.
+export async function prepareQuickLettering() {
+  const sheet = await loadImage('assets/quick-find-mask-v12.png');
+  const canvas = document.createElement('canvas');
+  canvas.width = 640;
+  canvas.height = Math.round(640 * sheet.naturalHeight / sheet.naturalWidth);
+  const ctx = canvas.getContext('2d');
+  if (!ctx) throw new Error('Canvas unavailable');
+  ctx.drawImage(sheet, 0, 0, canvas.width, canvas.height);
+  const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  tintLettering(pixels.data, [89, 67, 127]);
+  ctx.putImageData(pixels, 0, 0);
+  const url = canvas.toDataURL('image/png');
+  await loadImage(url);
+  document.documentElement.style.setProperty('--lettering-quick-ink', `url("${url}")`);
+  document.body.classList.add('quick-lettering-ready');
+}

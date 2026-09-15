@@ -1,9 +1,10 @@
 // Approved six-page visual system. Keep all content as accessible bilingual HTML.
 import {siteConfig} from './site-config.js?v=10';
 // Styles are preloaded in index.html.
-import {prepareLettering} from './brush-lettering.mjs?v=10';
+import {prepareLettering,prepareQuickLettering} from './brush-lettering.mjs?v=12';
 import {trackTask} from './asset-loader.mjs?v=10';
 trackTask('lettering',async()=>{if(!await prepareLettering())throw new Error('Lettering unavailable');});
+trackTask('quick-lettering',prepareQuickLettering);
 ['时间序列预测','量子机器学习','游戏聊天中的语言识别','优化与决策'].forEach((title,i)=>content.research.items[i].zh=title);
 const stage=document.createElement('div');stage.className='stage-copy';stage.innerHTML=`<div class="home-title"><h1 data-zh="你被变成了<br>百变怪！" data-en="You became<br>a Ditto!">你被变成了<br>百变怪！</h1><p class="signature">Josie Z.</p><p class="tags" data-zh="游戏 / 数学 / 创作 / AI" data-en="Games / Math / Creation / AI"></p></div><div class="cave-title"><h1 data-zh="小心！" data-en="Watch out!">小心！</h1><p data-zh="Z 变身利欧路 · 空格碎岩" data-en="Z to become Riolu · Space to smash rocks"></p></div>`;$('.map-wrap').append(stage);
 if(siteConfig?.home){const h=siteConfig.home;stage.querySelector('.signature').textContent=h.name;for(const [selector,values] of [['.home-title h1',h.headline],['.tags',h.tags],['.cave-title h1',siteConfig.cave.headline]]){const el=stage.querySelector(selector);const safe=v=>v.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));el.dataset.zh=safe(values[0]);el.dataset.en=safe(values[1]);}document.body.classList.toggle('custom-home-title',h.headline[0]!=='你被变成了\n百变怪！');document.body.classList.toggle('custom-cave-title',siteConfig.cave.headline[0]!=='小心！');}
@@ -14,8 +15,8 @@ const quickDescriptions=[
  ['游戏制作 · 游戏记录','Game development · Play records'],
  ['电影 · 阅读 · 音乐 · 其他兴趣','Films · Books · Music · Interests']
 ];
-const quickFind=document.createElement('nav');quickFind.className='quick-find';quickFind.setAttribute('aria-labelledby','quick-find-title');
-quickFind.innerHTML='<h2 id="quick-find-title" data-zh="快速查找！" data-en="Quick find!">快速查找！</h2><div class="quick-find-links">'+nodes.map((n,i)=>`<button type="button" data-open="${n.id}"><strong data-zh="${n.zh}" data-en="${n.en}">${n.zh}</strong><span class="quick-arrow" aria-hidden="true">↗</span><span class="quick-description" data-zh="${quickDescriptions[i][0]}" data-en="${quickDescriptions[i][1]}">${quickDescriptions[i][0]}</span></button>`).join('')+'</div>';
+const quickFind=document.createElement('button');quickFind.type='button';quickFind.className='quick-find';quickFind.dataset.open='archive';quickFind.setAttribute('aria-haspopup','dialog');
+quickFind.innerHTML='<span data-zh="快速查找！" data-en="Quick find!">快速查找！</span>';
 stage.append(quickFind);
 document.querySelector('header').innerHTML='<nav><button data-open="hi" data-zh="Hi了吗" data-en="Say Hi">Hi了吗</button><button data-open="archive" data-zh="目录" data-en="Index">目录</button></nav>';
 // Preserve the original language handler while relocating the control.
@@ -35,7 +36,7 @@ fillReader=id=>{
  else if(id==='make')html=`${heading(id,'做了吗','Made It','项目 · 研究 · 课程与作业','Projects · Research · Coursework')}<div class="project-grid">${content.research.items.map(tile).join('')}</div><section class="course-section"><h3>${t('课程与作业','Courses & assignments')}</h3><p>${t('按主题整理，系列课程合并列出。','Grouped by topic; course sequences are combined.')}</p>${courses.map(c=>`<details><summary>${t(c[0],c[1])}<span>${c[2].length}</span></summary><div class="course-list">${c[2].map(a=>`<span>${t(...a)}</span>`).join('')}</div></details>`).join('')}</section>`;
  else if(id==='play')html=`${heading(id,'玩了吗','Play Time','做游戏，也玩游戏。','Making games. Playing games.')}<section class="page-section"><h3>${t('我做的游戏','Games I make')}</h3><div class="project-grid games-grid">${content.games.items.map(tile).join('')}</div></section><section class="page-section"><h3>${t('我的游戏记录','Games I play')}</h3><p>${t('叙事、角色扮演、卡牌与模拟经营。这里会放我的游戏截图和记录。','Narrative games, RPGs, card games and simulations. A place for my gameplay captures and notes.')}</p><div class="collection-grid records">${pending('✧','游戏截图待添加','Gameplay captures')}${pending('⌘','游戏记录待添加','Play notes')}${pending('♡','喜欢的时刻待添加','Favorite moments')}</div></section>`;
  else if(id==='watch')html=`${heading(id,'爱了吗','Things I Love','电影 / 书 / 音乐 / 学习笔记','Films / Books / Music / Study notes')}<div class="collection-grid">${pending('▥','电影','Films')}${pending('▤','书','Books')}${pending('♫','音乐','Music')}${pending('✎','学习笔记','Study notes')}</div><p class="empty-note">${t('读过、看过、听过的内容会陆续整理在这里。','I will collect what I read, watch, listen to and learn here.')}</p>`;
- else html=`${heading(id,'去哪里？','Where to?','选择一个栏目，直接浏览。','Choose a section to explore.')}<div class="index-grid">${nodes.map(n=>`<button data-open="${n.id}"><span>${n[lang]}</span> ↗</button>`).join('')}</div>`;
+ else html=`${heading(id,'快速查找！','Quick find!','选择一个栏目，直接浏览。','Choose a section to explore.')}<div class="index-grid quick-index">${nodes.map((n,i)=>`<button data-open="${n.id}"><span>${n[lang]} ↗</span><small>${t(...quickDescriptions[i])}</small></button>`).join('')}</div>`;
  $('#reader-content').innerHTML=html;
  if(id==='make')$('#reader-content').insertAdjacentHTML('beforeend',`<section class="course-section"><h3>${t('作业与实验','Assignments & experiments')}</h3><p>${t('概率模型：分布、回归与计算。算法：图、最短路、最小生成树与动态规划。机器学习：分类、回归与模型实验。优化：设施选址、资源分配、投资组合与路径艺术。统计计算：蒙特卡罗、Bootstrap 与 MCMC。量子计算：量子门与线路。','Probabilistic models: distributions, regression and computation. Algorithms: graphs, shortest paths, spanning trees and dynamic programming. Machine learning: classification, regression and model experiments. Optimization: facility location, allocation, portfolios and path art. Statistical computing: Monte Carlo, bootstrap and MCMC. Quantum computing: gates and circuits.')}</p></section>`);
 };
