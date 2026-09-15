@@ -7,7 +7,7 @@ draw=()=>{};
 // Styles are preloaded in index.html to prevent an unstyled initial frame.
 content.experience={zh:'沿途经历',en:'Along the way',intro:['在不同的地方，与人一起学习和做事。','Learning and making things with people, in different places.'],items:[entry('哥伦比亚大学 · 课程助教','Columbia University · Course assistant','参与 Scheduling 课程的教学支持，在运筹学的学习之外体验知识的交流。','Supporting the Scheduling course, exploring the exchange of knowledge alongside studies in operations research.','TEACHING · 2026'),entry('百度 · 数据标注','Baidu · Data annotation','在百度参与数据标注工作。','Worked on data annotation at Baidu.','INTERNSHIP · 2024–2025'),entry('券商实习','Securities firm internship','有过券商实习经历。','I interned at a securities firm.','INTERNSHIP · 2024'),entry('武汉大学 · 校园与志愿活动','Wuhan University · Campus & volunteering','在学生组织和志愿活动中参与组织协作，把想法变成一起完成的事情。','Organizing and collaborating through student activities and volunteering, turning ideas into shared efforts.','COMMUNITY')]};
 content.life.items=[...content.experience.items,...content.life.items];content.life.intro=['教育、工作、校园活动与个人兴趣。','Education, work, campus activities and personal interests.'];
-nodes.splice(0,nodes.length,{id:'hi',sub:'HELLO'},{id:'make',sub:'PROJECTS'},{id:'play',sub:'GAMES'},{id:'watch',sub:'COLLECTION'});const names=[['Hi了吗','Say Hi'],['做了吗','Made It'],['玩了吗','Play Time'],['爱了吗','Things I Love']];
+nodes.splice(0,nodes.length,{id:'hi',sub:'HELLO'},{id:'make',sub:'PROJECTS'},{id:'play',sub:'GAMES'},{id:'watch',sub:'COLLECTION'});const names=[['认识了吗','Meet Me'],['实践了吗','In Practice'],['创造了吗','Create'],['快乐了吗','Enjoy Life']];
 nodes.forEach((n,i)=>{n.zh=names[i][0];n.en=names[i][1];if(content[n.id])Object.assign(content[n.id],{zh:n.zh,en:n.en})});
 $('.intro h1').dataset.zh='赵卓羲 · 个人主页';$('.intro h1').dataset.en='Josie Zhao · Personal Website';
 let game=createGame(),stories=siteConfig?.cave?.rocks||defaults,loaded=true,lastFrame=0,accumulator=0;
@@ -80,5 +80,5 @@ function render(){g.imageSmoothingEnabled=false;background();if(game.scene==='fa
 function animate(t){const dt=lastFrame?Math.min((t-lastFrame)/1000,.08):0;lastFrame=t;accumulator+=dt;while(accumulator>=1/120){const e=stepGame(game,{left:held.has('left'),right:held.has('right'),run:held.has('run'),...pulses,modal:$('#reader').open||!loaded,hidden:document.hidden},1/120);pulses.jump=pulses.action=pulses.transform=false;accumulator-=1/120;if(e?.type==='page'){openReader(nodes[e.section].id);clearInput();}if(e?.type==='failure'||e?.type==='home'){clearInput();renderText();}if(e?.type==='cloud'){showCloud();clearInput();cloud.querySelector('button').focus();}}
  render();requestAnimationFrame(animate);}
 let meadow=new Image();watchAsset('home-background','assets/pixel-meadow.webp',im=>{meadow=im;});
-await import('./refinement.js?v=13');
+await import('./refinement.js?v=14');
 renderText();const previewRoute=new URLSearchParams(location.search).get('preview');if(previewRoute==='cave'){enterFailure(game);renderText();}else if(nodes.some(n=>n.id===previewRoute))openReader(previewRoute);requestAnimationFrame(animate);

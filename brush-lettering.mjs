@@ -60,3 +60,34 @@ export async function prepareQuickLettering() {
   document.documentElement.style.setProperty('--lettering-quick-ink', `url("${url}")`);
   document.body.classList.add('quick-lettering-ready');
 }
+
+// Four updated names share one brush sheet; keep old names out of loading fallbacks.
+export async function prepareSectionLettering() {
+  const sheet = await loadImage('assets/section-names-v14.png');
+  const cellW = sheet.naturalWidth / 2, cellH = sheet.naturalHeight / 2;
+  const output = [];
+  for (const [i, id] of ['hi', 'make', 'play', 'watch'].entries()) {
+    const cell = document.createElement('canvas');
+    cell.width = cellW; cell.height = cellH;
+    const ctx = cell.getContext('2d');
+    if (!ctx) throw new Error('Canvas unavailable');
+    ctx.drawImage(sheet, (i % 2) * cellW, Math.floor(i / 2) * cellH, cellW, cellH, 0, 0, cellW, cellH);
+    const pixels = ctx.getImageData(0, 0, cell.width, cell.height);
+    let left=cell.width, right=0, top=cell.height, bottom=0;
+    for(let y=0;y<cell.height;y++)for(let x=0;x<cell.width;x++){
+      const p=(y*cell.width+x)*4;
+      if(pixels.data[p]>50){left=Math.min(left,x);right=Math.max(right,x);top=Math.min(top,y);bottom=Math.max(bottom,y);}
+    }
+    if(right<=left||bottom<=top)throw new Error('Empty section lettering');
+    for(const [color,rgb] of [['ink',[89,67,127]],['white',[255,255,255]]]){
+      const crop=document.createElement('canvas');crop.width=right-left+13;crop.height=bottom-top+13;
+      const out=crop.getContext('2d');if(!out)throw new Error('Canvas unavailable');
+      out.drawImage(cell,left,top,right-left+1,bottom-top+1,6,6,right-left+1,bottom-top+1);
+      const data=out.getImageData(0,0,crop.width,crop.height);tintLettering(data.data,rgb);out.putImageData(data,0,0);
+      const url=crop.toDataURL('image/png');await loadImage(url);
+      output.push([`--section-${id}-${color}`,`url("${url}")`]);
+    }
+  }
+  for(const [key,value] of output)document.documentElement.style.setProperty(key,value);
+  document.body.classList.add('section-lettering-ready');
+}

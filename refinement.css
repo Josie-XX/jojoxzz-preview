@@ -10,29 +10,16 @@ dialog#reader{position:fixed;inset:0;width:100vw;max-width:none;height:100dvh;ma
 /* Transparent lettering PNGs preserve the design without iOS CSS masking. */
 html[lang=zh-CN] .titles-ready .home-title{width:62%;left:3%;top:5%}
 html[lang=zh-CN] .titles-ready .home-title h1{position:relative;height:31cqw;font-size:0;color:transparent;text-shadow:none;transform:none}
-html[lang=zh-CN] .titles-ready .home-title h1:after,html[lang=zh-CN] .titles-ready .cave-title h1:after,html[lang=zh-CN] .titles-ready dialog:not([data-page=archive]) .page-heading h2:after{content:'';position:absolute;inset:0;background:transparent;background-image:var(--lettering-main-white);background-repeat:no-repeat;background-size:300% 320%;background-position:0% 17.05%;filter:drop-shadow(5px 7px 0 #7457a54a)}
+html[lang=zh-CN] .titles-ready .home-title h1:after,html[lang=zh-CN] .titles-ready .cave-title h1:after{content:'';position:absolute;inset:0;background:transparent;background-image:var(--lettering-main-white);background-repeat:no-repeat;background-size:300% 320%;background-position:0% 17.05%;filter:drop-shadow(5px 7px 0 #7457a54a)}
 html[lang=zh-CN] .titles-ready .home-title .signature{margin:0 0 6px 4%;font-size:6cqw}html[lang=zh-CN] .titles-ready .home-title .tags{margin-left:4%}
-html[lang=zh-CN] .titles-ready dialog:not([data-page=archive]) .page-heading h2{position:relative;font-size:0;color:transparent;text-shadow:none;transform:none;width:min(540px,75vw);height:auto;aspect-ratio:512/260;margin:0 0 12px -3%}
-html[lang=zh-CN] .titles-ready dialog:not([data-page=archive]) .page-heading h2:after{background-size:300% 393.85%;background-position:50% 80.5%}
-html[lang=zh-CN] .titles-ready dialog[data-page=hi] .page-heading h2:after{background-position:50% 20%;background-size:300% 365.71%}
-html[lang=zh-CN] .titles-ready dialog[data-page=make] .page-heading h2:after{background-position:100% 20%;background-size:300% 365.71%}
-html[lang=zh-CN] .titles-ready dialog[data-page=play] .page-heading h2:after{background-position:0% 80.5%}
 html[lang=zh-CN] .titles-ready .cave-title h1{position:relative;font-size:0;color:transparent;text-shadow:none;width:48cqw;height:24cqw;transform:none}
 html[lang=zh-CN] .titles-ready .cave-title h1:after{background-size:300% 393.85%;background-position:100% 80.5%}
-html[lang=zh-CN] .titles-ready dialog:not([data-page=archive]) #reader-content .page-heading h2{font-size:0!important;color:transparent!important;text-shadow:none!important;transform:none!important;width:min(480px,75vw);margin-top:-8px}
-html[lang=zh-CN] .titles-ready .portal-labels button{width:10cqw;height:4.4cqw;font-size:0;color:transparent}
-html[lang=zh-CN] .titles-ready .portal-labels button:after{content:'';position:absolute;inset:0;background:transparent;background-image:var(--lettering-main-ink);background-repeat:no-repeat;background-size:300% 365.71%;background-position:50% 20%}
-html[lang=zh-CN] .titles-ready .portal-labels button:nth-child(2):after{background-position:100% 20%}
-html[lang=zh-CN] .titles-ready .portal-labels button:nth-child(3):after{background-size:300% 393.85%;background-position:0% 80.5%}
-html[lang=zh-CN] .titles-ready .portal-labels button:nth-child(4):after{background-size:300% 393.85%;background-position:50% 80.5%}
 @media(prefers-reduced-motion:reduce){dialog#reader{scroll-behavior:auto}*{transition:none!important}}
 /* The renamed portal now uses the same brush-lettering treatment as its siblings. */
-html[lang=zh-CN] .titles-ready .portal-labels button[data-open=watch]:after,html[lang=zh-CN] .titles-ready dialog[data-page=watch] .page-heading h2:after{background-image:var(--lettering-love-white)}
 /* Keep the longer self-study story readable within the fixed game viewport. */
 #pixel-cloud{z-index:10;max-height:72dvh;display:flex;flex-direction:column}#pixel-cloud[hidden]{display:none}#pixel-cloud p{font-size:17px;line-height:1.85;text-align:left;max-height:42dvh;overflow:auto;overscroll-behavior:contain}#pixel-cloud button{align-self:center;flex-shrink:0}
 html[lang=zh-CN] .titles-ready.custom-home-title .home-title h1{font-size:8cqw;color:white;height:auto;white-space:pre-line;text-shadow:5px 7px #7457a54a}html[lang=zh-CN] .titles-ready.custom-home-title .home-title h1:after,html[lang=zh-CN] .titles-ready.custom-cave-title .cave-title h1:after{display:none}html[lang=zh-CN] .titles-ready.custom-cave-title .cave-title h1{font-size:10cqw;color:white;height:auto;white-space:pre-line}.home-title h1,.cave-title h1{white-space:pre-line}
 
-html[lang=zh-CN] .titles-ready .portal-labels button[data-open=watch]:after{background-image:var(--lettering-love-ink)}
 
 /* In-app browser recovery and touch controls; no dependency on image readiness. */
 .asset-notice{position:absolute;left:4%;right:4%;bottom:112px;z-index:12;display:flex;align-items:center;justify-content:center;gap:10px;padding:8px 12px;border-radius:12px;background:#f9f6ffe6;color:#66517f;font:12px/1.5 'PingFang SC',sans-serif;pointer-events:auto}
@@ -65,3 +52,15 @@ html[lang=zh-CN] .quick-lettering-ready .quick-find:after{content:'';position:ab
 html[lang=zh-CN] .quick-lettering-ready dialog[data-page=archive] .page-heading h2{position:relative;width:min(360px,70vw);height:min(150px,29vw);font-size:0;color:transparent;text-shadow:none;transform:none;margin:0}
 html[lang=zh-CN] .quick-lettering-ready dialog[data-page=archive] .page-heading h2:after{content:'';position:absolute;inset:0;background:var(--lettering-quick-ink) center/contain no-repeat}
 @media(max-width:700px){.quick-index{gap:14px}.quick-index button{padding:16px;font-size:25px}.quick-index small{font-size:13px}}
+/* Renamed sections, using the same brush artwork and right-aligned portal anchors. */
+[data-open=hi],[data-page=hi]{--section-ink:var(--section-hi-ink);--section-white:var(--section-hi-white)}
+[data-open=make],[data-page=make]{--section-ink:var(--section-make-ink);--section-white:var(--section-make-white)}
+[data-open=play],[data-page=play]{--section-ink:var(--section-play-ink);--section-white:var(--section-play-white)}
+[data-open=watch],[data-page=watch]{--section-ink:var(--section-watch-ink);--section-white:var(--section-watch-white)}
+html[lang=zh-CN] .portal-labels button{width:13.3cqw;height:4.4cqw}
+html[lang=zh-CN] .section-lettering-ready .portal-labels button{font-size:0;color:transparent}
+html[lang=zh-CN] .section-lettering-ready .portal-labels button:after{content:'';position:absolute;inset:0;background:var(--section-ink) center/contain no-repeat}
+html[lang=zh-CN] .section-lettering-ready dialog:not([data-page=archive]) .page-heading h2{position:relative;width:min(480px,75vw);height:min(150px,24vw);font-size:0!important;color:transparent!important;text-shadow:none;transform:none}
+html[lang=zh-CN] .section-lettering-ready dialog:not([data-page=archive]) .page-heading h2:after{content:'';position:absolute;inset:0;background:var(--section-white) left center/contain no-repeat}
+html[lang=zh-CN] .section-lettering-ready #reader.trail-reader .trail-heading h2{position:relative;width:clamp(140px,18vw,245px);height:clamp(44px,5.7vw,78px);font-size:0;color:transparent;text-shadow:none;transform:none}
+html[lang=zh-CN] .section-lettering-ready #reader.trail-reader .trail-heading h2:after{content:'';position:absolute;inset:0;background:var(--section-white) left center/contain no-repeat;filter:drop-shadow(3px 4px 0 #856ba442)}
