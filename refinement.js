@@ -15,9 +15,22 @@ const quickDescriptions=[
  ['游戏制作 · 游戏记录','Game development · Play records'],
  ['电影 · 阅读 · 音乐 · 其他兴趣','Films · Books · Music · Interests']
 ];
-const quickFind=document.createElement('button');quickFind.type='button';quickFind.className='quick-find';quickFind.dataset.open='archive';quickFind.setAttribute('aria-haspopup','dialog');
+const quickWrap=document.createElement('div');quickWrap.className='quick-find-wrap';
+const quickFind=document.createElement('button');quickFind.type='button';quickFind.className='quick-find';quickFind.setAttribute('aria-expanded','false');quickFind.setAttribute('aria-controls','quick-find-panel');
 quickFind.innerHTML='<span data-zh="快速查找！" data-en="Quick find!">快速查找！</span>';
-stage.append(quickFind);
+const quickPanel=document.createElement('nav');quickPanel.id='quick-find-panel';quickPanel.className='quick-find-panel';quickPanel.hidden=true;quickPanel.setAttribute('aria-label','快速查找 / Quick find');
+quickPanel.innerHTML=nodes.map((n,i)=>`<button type="button" data-open="${n.id}"><span data-zh="${n.zh} ↗" data-en="${n.en} ↗">${n.zh} ↗</span><small data-zh="${quickDescriptions[i][0]}" data-en="${quickDescriptions[i][1]}">${quickDescriptions[i][0]}</small></button>`).join('');
+quickWrap.append(quickFind,quickPanel);stage.append(quickWrap);
+let quickCloseTimer,quickRestoringFocus=false;
+const showQuickFind=(open)=>{clearTimeout(quickCloseTimer);quickPanel.hidden=!open;quickFind.setAttribute('aria-expanded',String(open));};
+quickWrap.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse')showQuickFind(true);});
+quickWrap.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')quickCloseTimer=setTimeout(()=>showQuickFind(false),220);});
+quickFind.addEventListener('click',e=>{showQuickFind(e.pointerType==='mouse'?true:quickPanel.hidden);});
+quickFind.addEventListener('focus',()=>{if(!quickRestoringFocus&&quickFind.matches(':focus-visible'))showQuickFind(true);});
+quickWrap.addEventListener('focusout',e=>{if(!quickWrap.contains(e.relatedTarget))showQuickFind(false);});
+quickWrap.addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Escape'){e.preventDefault();showQuickFind(false);quickRestoringFocus=true;quickFind.focus();quickRestoringFocus=false;}});
+quickPanel.addEventListener('click',e=>{if(e.target.closest('[data-open]'))showQuickFind(false);});
+document.addEventListener('pointerdown',e=>{if(!quickWrap.contains(e.target))showQuickFind(false);});
 document.querySelector('header').innerHTML='<nav><button data-open="hi" data-zh="Hi了吗" data-en="Say Hi">Hi了吗</button><button data-open="archive" data-zh="目录" data-en="Index">目录</button></nav>';
 // Preserve the original language handler while relocating the control.
 const language=document.createElement('button');language.id='language';language.onclick=()=>{lang=lang==='zh'?'en':'zh';localStorage.setItem('josie-language',lang);renderText();};document.querySelector('header nav').append(language);

@@ -46,11 +46,21 @@ html[lang=zh-CN] .asset-notice [lang=en],html[lang=en] .asset-notice [lang=zh]{d
 @media(min-width:701px){.asset-notice{left:26%;right:26%;bottom:55px}}
 
 /* One brush-lettered shortcut directly above the highest portal. */
-.quick-find{position:absolute;right:7%;top:27%;width:16cqw;height:6.7cqw;padding:0;border:0;background:none;color:#59437f;pointer-events:auto;font:clamp(13px,2.4cqw,34px)/1 var(--hand);white-space:nowrap;transition:transform .2s}
+.stage-copy{z-index:7}
+.quick-find-wrap{position:absolute;right:7%;top:27%;width:16cqw;height:6.7cqw;pointer-events:auto}
+.quick-find{position:relative;width:100%;height:100%;padding:0;border:0;background:none;color:#59437f;pointer-events:auto;font:clamp(13px,2.4cqw,34px)/1 var(--hand);white-space:nowrap;transition:transform .2s}
 .quick-find:hover{transform:translateX(-5px)}
 html[lang=zh-CN] .quick-lettering-ready .quick-find span{color:transparent}
 html[lang=zh-CN] .quick-lettering-ready .quick-find:after{content:'';position:absolute;inset:0;background:var(--lettering-quick-ink) center/contain no-repeat;pointer-events:none}
-[data-scene=failure] .quick-find{display:none}
+[data-scene=failure] .quick-find-wrap{display:none}
+.quick-find-panel{position:absolute;right:0;top:100%;width:min(520px,86vw);display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px;background:#e5ddf6f5;border:1px solid #ffffff80;border-radius:24px;box-shadow:0 12px 35px #57407725;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);max-height:52dvh;overflow:auto;overscroll-behavior:contain}
+.quick-find-panel[hidden]{display:none}
+.quick-find-panel button{display:block;min-width:0;text-align:left;padding:20px 16px;border:0;border-radius:18px;color:#59437f;background:#ffffff38;transition:background .15s}
+.quick-find-panel button:hover,.quick-find-panel button:focus-visible{background:#ffffff8c}
+.quick-find-panel button span{font:26px/1.3 var(--hand)}
+.quick-find-panel small{display:block;font:14px/1.7 'Avenir Next','PingFang SC',sans-serif;color:#79658f;margin-top:14px}
+@media(max-width:700px){.quick-find-panel{gap:8px;padding:10px;border-radius:18px}.quick-find-panel button{padding:14px 10px;border-radius:13px}.quick-find-panel button span{font-size:20px}.quick-find-panel small{font-size:12px;margin-top:8px}}
+@media(orientation:landscape) and (max-height:520px){.quick-find-panel{max-height:58dvh}.quick-find-panel button{padding:10px}.quick-find-panel button span{font-size:18px}.quick-find-panel small{font-size:11px;margin-top:5px}}
 .quick-index small{display:block;font:15px/1.7 'Avenir Next','PingFang SC',sans-serif;margin-top:12px;color:#71618c}
 html[lang=zh-CN] .quick-lettering-ready dialog[data-page=archive] .page-heading h2{position:relative;width:min(360px,70vw);height:min(150px,29vw);font-size:0;color:transparent;text-shadow:none;transform:none;margin:0}
 html[lang=zh-CN] .quick-lettering-ready dialog[data-page=archive] .page-heading h2:after{content:'';position:absolute;inset:0;background:var(--lettering-quick-ink) center/contain no-repeat}

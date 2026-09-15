@@ -80,5 +80,5 @@ function render(){g.imageSmoothingEnabled=false;background();if(game.scene==='fa
 function animate(t){const dt=lastFrame?Math.min((t-lastFrame)/1000,.08):0;lastFrame=t;accumulator+=dt;while(accumulator>=1/120){const e=stepGame(game,{left:held.has('left'),right:held.has('right'),run:held.has('run'),...pulses,modal:$('#reader').open||!loaded,hidden:document.hidden},1/120);pulses.jump=pulses.action=pulses.transform=false;accumulator-=1/120;if(e?.type==='page'){openReader(nodes[e.section].id);clearInput();}if(e?.type==='failure'||e?.type==='home'){clearInput();renderText();}if(e?.type==='cloud'){showCloud();clearInput();cloud.querySelector('button').focus();}}
  render();requestAnimationFrame(animate);}
 let meadow=new Image();watchAsset('home-background','assets/pixel-meadow.webp',im=>{meadow=im;});
-await import('./refinement.js?v=12');
+await import('./refinement.js?v=13');
 renderText();const previewRoute=new URLSearchParams(location.search).get('preview');if(previewRoute==='cave'){enterFailure(game);renderText();}else if(nodes.some(n=>n.id===previewRoute))openReader(previewRoute);requestAnimationFrame(animate);
