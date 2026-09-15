@@ -1,8 +1,9 @@
-import {TW,TH,BASE,buildTrail,newWalker,nearestItem,advanceWalker,capturePose} from './trail-engine.mjs?v=8';
-import {trailRecords} from './trail-data.js?v=8';
-import {createStory,turnStory,tickStory,storyDuration} from './story-stack.mjs?v=8';
-import {siteConfig,authoredWorld} from './site-config.js?v=8';
-const css=document.createElement('link');css.rel='stylesheet';css.href='trail.css?v=8';document.head.append(css);
+import {TW,TH,BASE,buildTrail,newWalker,nearestItem,advanceWalker,capturePose} from './trail-engine.mjs?v=10';
+import {trailRecords} from './trail-data.js?v=10';
+import {createStory,turnStory,tickStory,storyDuration} from './story-stack.mjs?v=10';
+import {siteConfig,authoredWorld} from './site-config.js?v=10';
+import {watchAsset,assetNotice,bindGameButton,fallbackSheet} from './asset-loader.mjs?v=10';
+const css=document.createElement('link');css.rel='stylesheet';css.href='trail.css?v=10';document.head.append(css);
 const reader=document.querySelector('#reader'),pane=document.querySelector('#reader-content');
 const routes=['hi','make','play','watch'],states=new Map(),held=new Set();
 let current=null,canvas=null,context=null,popup=null,jump=false,last=0,accumulator=0,nearId=null,disposed=false;
@@ -10,14 +11,15 @@ const surface=document.createElement('canvas');surface.width=TW;surface.height=T
 // One native pixel-art source for all 151 Kanto species; loaded on demand.
 const npcImages=new Map();
 const berryNames=['cheri','chesto','pecha','rawst','aspear','leppa','oran','persim','lum','sitrus','nanab','pinap','figy','wiki','mago','aguav','iapapa','razz','bluk','wepear','pomeg','kelpsy','qualot','hondew'];
-const berryImages=berryNames.map(n=>{const im=new Image();im.src='assets/berries/'+n+'.png';return im;});
-const ballImage=new Image();ballImage.src='assets/pixel-props.png';
-const ditto=new Image();ditto.src='assets/pixel-ditto.png';const meadow=new Image();meadow.src='assets/pixel-meadow.png';
+const berryImages=new Map();
+let ballImage=new Image();watchAsset('trail-props','assets/pixel-props.webp',im=>{ballImage=im;});
+const fallbackBall=fallbackSheet('props')[0],fallbackDitto=fallbackSheet('ditto');
+let ditto=new Image(),meadow=new Image();watchAsset('trail-ditto','assets/pixel-ditto.webp',im=>{ditto=im;});watchAsset('trail-background','assets/pixel-meadow.webp',im=>{meadow=im;});
 const data=trailRecords(content,courses);const worldFor=id=>authoredWorld(id,()=>buildTrail(data[id],routes.indexOf(id)));
 const palettes={hi:['#dbddf6','#bccbdb','#92b1b4','#668b93'],make:['#d8dff8','#bbcdea','#9eadd1','#6e81aa'],play:['#e2d9f4','#c8bade','#b19bc8','#8975a5'],watch:['#d9e5f5','#b8d5df','#93bcca','#648da7']};
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const tx=a=>a[lang==='zh'?0:1];
-let story=null;
+let story=null,removeAssetNotice=null;
 let seen;try{seen=new Set(JSON.parse(localStorage.getItem('josie-trail-seen-v1')||'[]'));}catch{seen=new Set();}
 function mark(item){seen.add(item.id);try{localStorage.setItem('josie-trail-seen-v1',JSON.stringify([...seen]));}catch{}updateHUD();}
 function clear(){held.clear();jump=false;}
@@ -67,10 +69,10 @@ fillReader=id=>{const aliases={about:'hi',life:'hi',games:'play',research:'make'
  document.querySelector('#reader-kicker').innerHTML=nav(id);
  pane.innerHTML=`<div class="trail-stage"><canvas id="trail-canvas" tabindex="0" aria-label="${tr('内页探索游戏。左右或 AD 移动，上键、W 或空格跳跃，靠近自动查看。五颗心，掉坑扣半颗心。','Content exploration game. Arrows or AD to move; up, W or Space to jump; approach to view. Five hearts; falling costs half a heart.')}"></canvas><div class="trail-heading"><h2 id="trail-name">${nodes.find(n=>n.id===id)[lang]}</h2><p id="trail-order">${tr('向右探索 · 认识我','Explore right · get to know me')}</p></div><div class="trail-hud"><div id="trail-hearts" role="img"></div><span id="trail-count"></span><button id="trail-index">${tr('内容目录','Contents')}</button><button id="trail-pause"></button></div><div class="trail-near" id="trail-near" aria-live="polite"></div><div class="trail-touch"><button data-move="left" aria-label="Left">←</button><button data-move="right" aria-label="Right">→</button><button data-move="jump" aria-label="Jump">↑</button></div></div>`;
  canvas=document.querySelector('#trail-canvas');context=canvas.getContext('2d');canvas.addEventListener('pointerdown',()=>canvas.focus({preventScroll:true}));document.querySelector('#trail-index').onclick=showCatalog;document.querySelector('#trail-pause').onclick=()=>{current.walker.paused=!current.walker.paused;clear();updateHUD();};
- document.querySelectorAll('[data-move]').forEach(b=>{b.addEventListener('pointerdown',e=>{e.preventDefault();b.setPointerCapture(e.pointerId);const k=b.dataset.move;if(k==='jump')jump=true;else held.add(k);});for(const evt of ['pointerup','pointercancel','lostpointercapture'])b.addEventListener(evt,()=>held.delete(b.dataset.move));});updateHUD();if(current.walker.gameOver)lifeEvent({type:'gameover'});
+ document.querySelectorAll('[data-move]').forEach(b=>bindGameButton(b,()=>{const k=b.dataset.move;if(k==='jump')jump=true;else held.add(k);},()=>held.delete(b.dataset.move)));removeAssetNotice?.();removeAssetNotice=assetNotice(document.querySelector('.trail-stage'));updateHUD();if(current.walker.gameOver)lifeEvent({type:'gameover'});
 };
 function nav(id){return `<button data-home>${tr('← 返回主页','← Home')}</button><nav>${nodes.map(n=>`<button data-open="${n.id}" ${n.id===id?'aria-current="page"':''}>${n[lang]}</button>`).join('')}</nav><button data-language>${lang==='zh'?'Language · EN':'Language · 中文'}</button>`;}
-reader.addEventListener('close',()=>{closePopup();clear();current=null;canvas=null;context=null;reader.classList.remove('trail-reader');});
+reader.addEventListener('close',()=>{removeAssetNotice?.();removeAssetNotice=null;closePopup();clear();current=null;canvas=null;context=null;reader.classList.remove('trail-reader');});
 window.addEventListener('blur',clear);document.addEventListener('visibilitychange',()=>{clear();last=0;accumulator=0;});
 window.addEventListener('keydown',e=>{if(!reader.open||!current||e.ctrlKey||e.metaKey||e.altKey)return;const key=e.key.toLowerCase();
  if(popup?.catalog){if(key==='escape'){e.preventDefault();e.stopImmediatePropagation();if(!e.repeat)closePopup();}else if(key==='tab'){const all=[...document.querySelectorAll('.trail-modal button,.trail-modal a')];if(!all.length)return;const first=all[0],end=all.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();end.focus();}else if(!e.shiftKey&&document.activeElement===end){e.preventDefault();first.focus();}}else if(['arrowleft','arrowright','arrowup','a','d','w',' '].includes(key))e.preventDefault();return;}
@@ -84,9 +86,9 @@ function rect(x,y,w,h,color){g.fillStyle=color;g.fillRect(Math.round(x),Math.rou
 function label(s,x,y,size=14,color='#574775',align='center'){g.font=`${size}px "Bradley Hand", "PingFang SC", sans-serif`;g.fillStyle=color;g.textAlign=align;g.fillText(s,x,y);}
 function flower(x,y,color='#fff4fb'){rect(x,y-12,2,12,'#839d9b');rect(x-4,y-16,10,5,color);rect(x-2,y-19,6,11,color);rect(x,y-15,2,3,'#d9ca98');}
 function grass(x,y){for(let i=0;i<8;i++){rect(x-30+i*8,y-12-(i%3)*8,6,12+(i%3)*8,i%2?'#94b5ad':'#abc8b5');rect(x-34+i*8,y-10,5,7,'#cfddca');}}
-function drawNPC(index,x,bottom){let im=npcImages.get(index);if(!im){im=new Image();im.src='assets/kanto/'+index+'.png';npcImages.set(index,im);}if(im.complete&&im.naturalWidth)g.drawImage(im,x-64,bottom-116,128,128);}
-function berry(index,x,y){const im=berryImages[index%berryImages.length];if(im.complete&&im.naturalWidth)g.drawImage(im,x-32,y-52,64,64);}
-function drawFinish(w,world){const f=world.finish,all=world.items.length>0&&world.items.every(i=>seen.has(i.id));if(all&&Math.abs(w.x-f.flagX)<TW*.6&&current.flagStarted==null)current.flagStarted=w.time;if(!all)current.flagStarted=null;const rise=all&&current.flagStarted!=null?Math.min(1,(w.time-current.flagStarted)/1.2):0,fy=f.y-45-rise*110;rect(f.flagX,f.y-182,5,182,'#827999');rect(f.flagX-4,f.y-187,13,8,'#eeeaff');rect(f.flagX+5,fy,58,30,all?'#b2d7c2':'#e4cfdf');rect(f.flagX+5,fy,58,5,'#fff2f7');label(all?'✓':'✧',f.flagX+31,fy+23,18,'#70647e');label(all?tr('已全部发现！','Everything discovered!'):tr('发现记录，升起旗子','Find every record to raise the flag'),f.flagX,f.y-211,18);const near=Math.abs(w.x-f.portalX)<105;rect(f.portalX-32,f.y,64,6,'#ede1f4');if(ballImage.complete&&ballImage.naturalWidth){const sw=ballImage.naturalWidth/2,sh=ballImage.naturalHeight/2;const open=capturePose(w,world).open*17;g.drawImage(ballImage,sw*.24,sh*.28,sw*.56,sh*.28,f.portalX-28,f.y-60-open,56,28);g.drawImage(ballImage,sw*.24,sh*.56,sw*.56,sh*.28,f.portalX-28,f.y-32+open*.3,56,28);}label(tr('返回首页','Back home'),f.portalX,f.y-80,16);if(near)label(tr('靠近精灵球传送','Approach to return'),f.portalX-30,f.y+37,13);}
+function drawNPC(index,x,bottom){if(!npcImages.has(index)){npcImages.set(index,null);watchAsset('npc-'+index,'assets/kanto/'+index+'.png',im=>npcImages.set(index,im));}const im=npcImages.get(index);if(im?.naturalWidth)g.drawImage(im,x-64,bottom-116,128,128);else{g.globalAlpha=.6;g.drawImage(fallbackDitto[0],x-30,bottom-60,60,60);g.globalAlpha=1;label('…',x,bottom-70,20);}}
+function berry(index,x,y){const key=index%berryNames.length;if(!berryImages.has(key)){berryImages.set(key,null);watchAsset('berry-'+key,'assets/berries/'+berryNames[key]+'.png',im=>berryImages.set(key,im));}const im=berryImages.get(key);if(im?.naturalWidth)g.drawImage(im,x-32,y-52,64,64);else flower(x,y,'#f6c9de');}
+function drawFinish(w,world){const f=world.finish,all=world.items.length>0&&world.items.every(i=>seen.has(i.id));if(all&&Math.abs(w.x-f.flagX)<TW*.6&&current.flagStarted==null)current.flagStarted=w.time;if(!all)current.flagStarted=null;const rise=all&&current.flagStarted!=null?Math.min(1,(w.time-current.flagStarted)/1.2):0,fy=f.y-45-rise*110;rect(f.flagX,f.y-182,5,182,'#827999');rect(f.flagX-4,f.y-187,13,8,'#eeeaff');rect(f.flagX+5,fy,58,30,all?'#b2d7c2':'#e4cfdf');rect(f.flagX+5,fy,58,5,'#fff2f7');label(all?'✓':'✧',f.flagX+31,fy+23,18,'#70647e');label(all?tr('已全部发现！','Everything discovered!'):tr('发现记录，升起旗子','Find every record to raise the flag'),f.flagX,f.y-211,18);const near=Math.abs(w.x-f.portalX)<105;rect(f.portalX-32,f.y,64,6,'#ede1f4');if(ballImage.complete&&ballImage.naturalWidth){const sw=ballImage.naturalWidth/2,sh=ballImage.naturalHeight/2;const open=capturePose(w,world).open*17;g.drawImage(ballImage,sw*.24,sh*.28,sw*.56,sh*.28,f.portalX-28,f.y-60-open,56,28);g.drawImage(ballImage,sw*.24,sh*.56,sw*.56,sh*.28,f.portalX-28,f.y-32+open*.3,56,28);}else g.drawImage(fallbackBall,f.portalX-28,f.y-60,56,56);label(tr('返回首页','Back home'),f.portalX,f.y-80,16);if(near)label(tr('靠近精灵球传送','Approach to return'),f.portalX-30,f.y+37,13);}
 function routeBackdrop(w,world,far,mid){g.save();g.globalAlpha=.4;for(let i=-1;i<9;i++){const x=i*190-(w.camera*.17%190),y=250+(i*29%70);if(world.theme===1){rect(x+25,y,45,BASE-y,far);rect(x+95,y-70,38,BASE-y+70,mid);rect(x+10,y-12,72,12,'#f2effb');rect(x+85,y-82,58,12,'#f2effb');for(let k=0;k<4;k++){rect(x+34,y+20+k*40,8,15,'#f7f2ff');rect(x+107,y-40+k*48,8,17,far);}}else if(world.theme===2){rect(x,y,130,17,far);rect(x+18,y-14,98,16,'#f8f0ff');rect(x+43,y-27,48,15,'#f8f0ff');rect(x+25,y+17,84,15,mid);rect(x+45,y+32,43,16,mid);}else{for(let k=0;k<5;k++)rect(x-k*18,y+k*34,85+k*36,BASE-y-k*34, k%2?far:mid);rect(x+5,y-6,65,9,'#f4f4ff');}}g.restore();}
 function drawWorld(){if(!current||!canvas||!context)return;const {walker:w,world}=current,[sky,far,mid,dark]=Object.values(palettes)[world.theme];rect(0,0,TW,TH,sky);g.imageSmoothingEnabled=false;
  if(meadow.complete&&meadow.naturalWidth){g.globalAlpha=.35;g.drawImage(meadow,0,0,TW,TH);g.globalAlpha=1;}
@@ -104,7 +106,7 @@ function drawWorld(){if(!current||!canvas||!context)return;const {walker:w,world
  });
  drawFinish(w,world);
  // The established Ditto sheet is reused, including its original alpha channel.
- if(ditto.complete&&ditto.naturalWidth){g.globalAlpha=w.hurt>0?(Math.floor(w.time*12)%2?.35:1):1;const frame=!w.grounded?3:Math.abs(w.vx)>0?(Math.floor(w.time*8)%2?1:2):0,sw=ditto.naturalWidth/2,sh=ditto.naturalHeight/2;g.save();const pose=capturePose(w,world);g.globalAlpha*=pose.alpha;g.translate(pose.x,pose.y+8);g.scale(pose.scale,pose.scale);if(w.face<0)g.scale(-1,1);g.drawImage(ditto,(frame%2)*sw,Math.floor(frame/2)*sh,sw,sh,-35,-62,70,70);g.restore();g.globalAlpha=1;}
+ if(ditto.complete&&ditto.naturalWidth){g.globalAlpha=w.hurt>0?(Math.floor(w.time*12)%2?.35:1):1;const frame=!w.grounded?3:Math.abs(w.vx)>0?(Math.floor(w.time*8)%2?1:2):0,sw=ditto.naturalWidth/2,sh=ditto.naturalHeight/2;g.save();const pose=capturePose(w,world);g.globalAlpha*=pose.alpha;g.translate(pose.x,pose.y+8);g.scale(pose.scale,pose.scale);if(w.face<0)g.scale(-1,1);g.drawImage(ditto,(frame%2)*sw,Math.floor(frame/2)*sh,sw,sh,-35,-62,70,70);g.restore();g.globalAlpha=1;} else {const pose=capturePose(w,world);g.save();g.globalAlpha=pose.alpha;g.translate(pose.x,pose.y+8);g.scale(pose.scale,pose.scale);if(w.face<0)g.scale(-1,1);g.drawImage(fallbackDitto[Math.floor(w.time*8)%4],-35,-62,70,70);g.restore();}
  g.restore();if(w.paused){rect(0,0,TW,TH,'#eee9ff99');label(tr('已暂停 · P 继续','Paused · P to resume'),TW/2,TH/2,28);}
  const r=canvas.getBoundingClientRect(),dpr=Math.min(devicePixelRatio||1,2),cw=Math.round(r.width*dpr),ch=Math.round(r.height*dpr);if(canvas.width!==cw||canvas.height!==ch){canvas.width=cw;canvas.height=ch;}context.imageSmoothingEnabled=false;context.fillStyle=sky;context.fillRect(0,0,cw,ch);const s=Math.min(cw/TW,ch/TH);context.drawImage(surface,(cw-TW*s)/2,(ch-TH*s)/2,TW*s,TH*s);
 }

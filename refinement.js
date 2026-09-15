@@ -1,8 +1,9 @@
 // Approved six-page visual system. Keep all content as accessible bilingual HTML.
-import {siteConfig} from './site-config.js?v=8';
+import {siteConfig} from './site-config.js?v=10';
 // Styles are preloaded in index.html.
-import {prepareLettering} from './brush-lettering.mjs?v=9';
-prepareLettering();
+import {prepareLettering} from './brush-lettering.mjs?v=10';
+import {trackTask} from './asset-loader.mjs?v=10';
+trackTask('lettering',async()=>{if(!await prepareLettering())throw new Error('Lettering unavailable');});
 ['时间序列预测','量子机器学习','游戏聊天中的语言识别','优化与决策'].forEach((title,i)=>content.research.items[i].zh=title);
 const stage=document.createElement('div');stage.className='stage-copy';stage.innerHTML=`<div class="home-title"><h1 data-zh="你被变成了<br>百变怪！" data-en="You became<br>a Ditto!">你被变成了<br>百变怪！</h1><p class="signature">Josie Z.</p><p class="tags" data-zh="游戏 / 数学 / 创作 / AI" data-en="Games / Math / Creation / AI"></p></div><div class="cave-title"><h1 data-zh="小心！" data-en="Watch out!">小心！</h1><p data-zh="Z 变身利欧路 · 空格碎岩" data-en="Z to become Riolu · Space to smash rocks"></p></div>`;$('.map-wrap').append(stage);
 if(siteConfig?.home){const h=siteConfig.home;stage.querySelector('.signature').textContent=h.name;for(const [selector,values] of [['.home-title h1',h.headline],['.tags',h.tags],['.cave-title h1',siteConfig.cave.headline]]){const el=stage.querySelector(selector);const safe=v=>v.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));el.dataset.zh=safe(values[0]);el.dataset.en=safe(values[1]);}document.body.classList.toggle('custom-home-title',h.headline[0]!=='你被变成了\n百变怪！');document.body.classList.toggle('custom-cave-title',siteConfig.cave.headline[0]!=='小心！');}
@@ -34,4 +35,4 @@ const baseRender=renderText;
 renderText=()=>{baseRender();document.title='Josie Z. · '+t('个人主页','Personal Website');$('.intro h1').textContent='';language.textContent=lang==='zh'?'Language · EN':'Language · 中文';};
 // Detail pages are full-screen, independently scrollable; homepage remains fixed.
 const baseOpen=openReader;openReader=id=>{baseOpen(id);$('#reader').scrollTop=0;};
-await import('./trail.js?v=8');
+await import('./trail.js?v=10');

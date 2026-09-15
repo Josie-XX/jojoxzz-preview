@@ -1,5 +1,6 @@
 // Render the existing lettering as ordinary transparent PNGs. CSS luminance
 // masks can disappear in iOS WebKit; keep readable HTML until every PNG is ready.
+import {loadImage} from './asset-loader.mjs?v=10';
 export function tintLettering(data, rgb) {
   for (let i = 0; i < data.length; i += 4) {
     const luminance = (.2126 * data[i] + .7152 * data[i + 1] + .0722 * data[i + 2]) / 255;
@@ -9,20 +10,11 @@ export function tintLettering(data, rgb) {
   return data;
 }
 
-function loadImage(src) {
-  return new Promise((resolve, reject) => {
-    const image = new Image();
-    image.onload = () => resolve(image);
-    image.onerror = () => reject(new Error('Lettering image unavailable'));
-    image.src = src;
-  });
-}
-
 export async function prepareLettering() {
   try {
     const sheets = await Promise.all([
-      loadImage('assets/brush-titles-mask.png'),
-      loadImage('assets/brush-titles-love-v7.png'),
+      loadImage('assets/brush-titles-mask.webp').catch(()=>loadImage('assets/brush-titles-mask.png',{attempts:1})),
+      loadImage('assets/brush-titles-love-v7.webp').catch(()=>loadImage('assets/brush-titles-love-v7.png',{attempts:1})),
     ]);
     const images = [];
     for (const [index, sheet] of sheets.entries()) {
@@ -43,8 +35,10 @@ export async function prepareLettering() {
     }
     for (const [key, value] of images) document.documentElement.style.setProperty(key, value);
     document.body.classList.add('titles-ready');
+    return true;
   } catch {
     // Leave the bilingual HTML visible if loading/conversion is unavailable.
     document.body.classList.remove('titles-ready');
+    return false;
   }
 }

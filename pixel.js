@@ -1,6 +1,7 @@
-import {W,H,FLOOR,stairs,portals,challenges,FAILURE_END,FAILURE_PIT,FAILURE_PIT_END,createGame,stepGame,returnHome,resumeContent,enterFailure,configureCave,caveTerrain,caveRocks} from './platform-engine.mjs?v=8';
-import {failures as defaults} from './failures.mjs?v=8';
-import {siteConfig} from './site-config.js?v=8';
+import {W,H,FLOOR,stairs,portals,challenges,FAILURE_END,FAILURE_PIT,FAILURE_PIT_END,createGame,stepGame,returnHome,resumeContent,enterFailure,configureCave,caveTerrain,caveRocks} from './platform-engine.mjs?v=10';
+import {failures as defaults} from './failures.mjs?v=10';
+import {siteConfig} from './site-config.js?v=10';
+import {watchAsset,assetNotice,bindGameButton,fallbackSheet} from './asset-loader.mjs?v=10';
 configureCave(siteConfig?.cave);
 draw=()=>{};
 // Styles are preloaded in index.html to prevent an unstyled initial frame.
@@ -9,8 +10,8 @@ content.life.items=[...content.experience.items,...content.life.items];content.l
 nodes.splice(0,nodes.length,{id:'hi',sub:'HELLO'},{id:'make',sub:'PROJECTS'},{id:'play',sub:'GAMES'},{id:'watch',sub:'COLLECTION'});const names=[['Hi了吗','Say Hi'],['做了吗','Made It'],['玩了吗','Play Time'],['爱了吗','Things I Love']];
 nodes.forEach((n,i)=>{n.zh=names[i][0];n.en=names[i][1];if(content[n.id])Object.assign(content[n.id],{zh:n.zh,en:n.en})});
 $('.intro h1').dataset.zh='赵卓羲 · 个人主页';$('.intro h1').dataset.en='Josie Zhao · Personal Website';
-let game=createGame(),stories=siteConfig?.cave?.rocks||defaults,loaded=false,error=false,lastFrame=0,accumulator=0;
-const held=new Set(),pulses={jump:false,action:false,transform:false};const sheets={};
+let game=createGame(),stories=siteConfig?.cave?.rocks||defaults,loaded=true,lastFrame=0,accumulator=0;
+const held=new Set(),pulses={jump:false,action:false,transform:false};const sheets={ditto:fallbackSheet('ditto'),props:fallbackSheet('props'),riolu:fallbackSheet('riolu')};
 const surface=document.createElement('canvas');surface.width=W;surface.height=H;const g=surface.getContext('2d');g.imageSmoothingEnabled=false;
 const back=document.createElement('button');back.id='pixel-back';back.hidden=true;$('.intro').append(back);
 const pause=document.createElement('button');pause.id='pixel-pause';$('.intro').append(pause);
@@ -35,13 +36,21 @@ window.addEventListener('blur',clearInput);document.addEventListener('visibility
 function press(k){if(k==='left'||k==='right'||k==='run')held.add(k);else if(k==='transform')pulses.transform=true;else if(k==='jump')pulses.jump=true;else if(k==='action'){if(game.cloud!==null){closeCloud();return}if(game.scene==='failure'&&game.form==='riolu')pulses.action=true;else pulses.jump=true;}}
 window.addEventListener('keydown',e=>{if($('#reader').open||e.metaKey||e.ctrlKey||e.altKey)return;const k=e.key.toLowerCase();const map={arrowleft:'left',a:'left',arrowright:'right',d:'right',arrowup:'jump',w:'jump',' ':'action',z:'transform',shift:'run'};if(map[k]){e.preventDefault();e.stopImmediatePropagation();if(!e.repeat)press(map[k]);}else if(k==='p'){e.preventDefault();if(!e.repeat)pause.click();}else if(k==='escape'&&game.scene==='failure'){e.preventDefault();home();}else if(k==='enter'&&game.cloud!==null){e.preventDefault();closeCloud();}},true);
 window.addEventListener('keyup',e=>{const k=e.key.toLowerCase();if(['arrowleft','a'].includes(k))held.delete('left');if(['arrowright','d'].includes(k))held.delete('right');if(k==='shift')held.delete('run');},true);
-controls.querySelectorAll('button').forEach(b=>{b.addEventListener('pointerdown',e=>{e.preventDefault();b.setPointerCapture(e.pointerId);press(b.dataset.key);canvas.focus({preventScroll:true});});['pointerup','pointercancel','lostpointercapture'].forEach(type=>b.addEventListener(type,()=>held.delete(b.dataset.key)));});
+controls.querySelectorAll('button').forEach(b=>bindGameButton(b,()=>{press(b.dataset.key);try{canvas.focus({preventScroll:true});}catch{}},()=>held.delete(b.dataset.key)));
 function showCloud(){const story=stories[game.cloud]||defaults[game.cloud];cloud.hidden=false;cloud.querySelector('small').textContent=tr(...story.title);cloud.querySelector('p').textContent=tr(...story.response);cloud.querySelector('button').textContent=tr('继续 · Enter','Continue · Enter');}
 async function loadStories(){if(siteConfig?.cave)return;try{const r=await fetch('failure-content.json',{cache:'no-store'});if(r.ok){const x=await r.json();if(Array.isArray(x)&&x.length===challenges.length&&x.every(s=>s.title?.length===2&&s.response?.length===2))stories=x;}}catch{}}
 loadStories();window.addEventListener('focus',loadStories);
 function splitSheet(im,cols=2,rows=2){return Array.from({length:cols*rows},(_,i)=>{const sw=Math.floor(im.width/cols),sh=Math.floor(im.height/rows),c=document.createElement('canvas');c.width=sw;c.height=sh;let q=c.getContext('2d');q.drawImage(im,(i%cols)*sw,Math.floor(i/cols)*sh,sw,sh,0,0,sw,sh);const data=q.getImageData(0,0,sw,sh).data;let minX=sw,minY=sh,maxX=0,maxY=0;for(let y=0;y<sh;y++)for(let x=0;x<sw;x++)if(data[(y*sw+x)*4+3]>100){minX=Math.min(minX,x);minY=Math.min(minY,y);maxX=Math.max(maxX,x);maxY=Math.max(maxY,y);}const cut=document.createElement('canvas');cut.width=Math.max(1,maxX-minX+1);cut.height=Math.max(1,maxY-minY+1);cut.getContext('2d').drawImage(c,minX,minY,cut.width,cut.height,0,0,cut.width,cut.height);return cut;});}
 function nativeFrames(im,fw,fh,count){return Array.from({length:count},(_,i)=>{const c=document.createElement('canvas');c.width=fw;c.height=fh;const q=c.getContext('2d');q.drawImage(im,i*fw,6*fh,fw,fh,0,0,fw,fh);const d=q.getImageData(0,0,fw,fh).data;let x0=fw,y0=fh,x1=0,y1=0;for(let y=0;y<fh;y++)for(let x=0;x<fw;x++)if(d[(y*fw+x)*4+3]>100){x0=Math.min(x0,x);y0=Math.min(y0,y);x1=Math.max(x1,x);y1=Math.max(y1,y);}const cut=document.createElement('canvas');cut.width=x1-x0+1;cut.height=y1-y0+1;cut.getContext('2d').drawImage(c,x0,y0,cut.width,cut.height,0,0,cut.width,cut.height);return cut;});}
-Promise.all([['ditto','assets/pixel-ditto.png'],['props','assets/pixel-props.png'],['rioluWalk','assets/riolu-walk.png'],['rioluAttack','assets/riolu-attack.png']].map(([key,url])=>new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>{sheets[key]=key==='rioluWalk'?nativeFrames(im,24,40,4):key==='rioluAttack'?nativeFrames(im,72,72,15):splitSheet(im);resolve()};im.onerror=reject;im.src=url;}))).then(()=>{sheets.riolu=[...sheets.rioluWalk,...sheets.rioluAttack];loaded=true;renderText()}).catch(()=>error=true);
+watchAsset('home-ditto','assets/pixel-ditto.webp',im=>{sheets.ditto=splitSheet(im);});
+watchAsset('home-props','assets/pixel-props.webp',im=>{sheets.props=splitSheet(im);});
+let caveAssetsStarted=false;
+function loadCaveAssets(){
+ if(caveAssetsStarted)return;caveAssetsStarted=true;
+ watchAsset('riolu-walk','assets/riolu-walk.png',im=>{const frames=nativeFrames(im,24,40,4);sheets.riolu.splice(0,4,...frames);});
+ watchAsset('riolu-attack','assets/riolu-attack.png',im=>{const frames=nativeFrames(im,72,72,15);sheets.riolu.splice(4,15,...frames);});
+}
+assetNotice($('.map-wrap'));
 function rect(x,y,w,h,c){g.fillStyle=c;g.fillRect(Math.round(x),Math.round(y),Math.round(w),Math.round(h));}
 function text(t,x,y,size=16,color='#66517f',align='left'){g.fillStyle=color;g.font='bold '+size+'px "Courier New", "PingFang SC", monospace';g.textAlign=align;g.fillText(t,Math.round(x),Math.round(y));}
 function sprite(key,frame,x,bottom,width,flip=false){const im=sheets[key]?.[frame];if(!im)return;const height=key==='riolu'?im.height*4:width*im.height/im.width;if(key==='riolu')width=im.width*4;g.save();g.translate(Math.round(x),Math.round(bottom));if(flip)g.scale(-1,1);g.drawImage(im,0,0,im.width,im.height,-width/2,-height,width,height);g.restore();}
@@ -64,12 +73,12 @@ function drawCharacter(){let x=game.x-game.camera,y=game.y,width=game.form==='ri
  // Riolu's selected native row faces left; Ditto's frames face right.
  sprite(game.form,frame,x,y,width,game.form==='riolu'?game.face>0:game.face<0);g.globalAlpha=1;
 }
-function render(){g.imageSmoothingEnabled=false;background();if(loaded){game.scene==='home'?drawHome():drawFailure();drawCharacter();}else text(error?tr('素材加载失败，可先使用目录浏览。','Assets unavailable. Contents is still available.'):tr('正在加载像素场景…','Loading pixel world…'),W/2,H/2,18,'#66517f','center');if(game.paused){rect(0,0,W,H,'#e9e0f6aa');text(tr('已暂停 · P 继续','PAUSED · P TO RESUME'),W/2,H/2,24,'#66517f','center');}
- const r=canvas.getBoundingClientRect(),dpr=devicePixelRatio||1;if(canvas.width!==Math.round(r.width*dpr)||canvas.height!==Math.round(r.height*dpr)){canvas.width=Math.round(r.width*dpr);canvas.height=Math.round(r.height*dpr);}
+function render(){g.imageSmoothingEnabled=false;background();if(game.scene==='failure')loadCaveAssets();game.scene==='home'?drawHome():drawFailure();drawCharacter();if(game.paused){rect(0,0,W,H,'#e9e0f6aa');text(tr('已暂停 · P 继续','PAUSED · P TO RESUME'),W/2,H/2,24,'#66517f','center');}
+ const r=canvas.getBoundingClientRect(),dpr=Math.min(devicePixelRatio||1,2);if(canvas.width!==Math.round(r.width*dpr)||canvas.height!==Math.round(r.height*dpr)){canvas.width=Math.round(r.width*dpr);canvas.height=Math.round(r.height*dpr);}
  ctx.setTransform(1,0,0,1,0,0);ctx.imageSmoothingEnabled=false;ctx.fillStyle='#d8caed';ctx.fillRect(0,0,canvas.width,canvas.height);const scale=Math.min(canvas.width/W,canvas.height/H),dx=(canvas.width-W*scale)/2,dy=(canvas.height-H*scale)/2;ctx.drawImage(surface,dx,dy,W*scale,H*scale);
 }
 function animate(t){const dt=lastFrame?Math.min((t-lastFrame)/1000,.08):0;lastFrame=t;accumulator+=dt;while(accumulator>=1/120){const e=stepGame(game,{left:held.has('left'),right:held.has('right'),run:held.has('run'),...pulses,modal:$('#reader').open||!loaded,hidden:document.hidden},1/120);pulses.jump=pulses.action=pulses.transform=false;accumulator-=1/120;if(e?.type==='page'){openReader(nodes[e.section].id);clearInput();}if(e?.type==='failure'||e?.type==='home'){clearInput();renderText();}if(e?.type==='cloud'){showCloud();clearInput();cloud.querySelector('button').focus();}}
  render();requestAnimationFrame(animate);}
-const meadow=new Image();meadow.src='assets/pixel-meadow.png';
-await import('./refinement.js?v=9');
+let meadow=new Image();watchAsset('home-background','assets/pixel-meadow.webp',im=>{meadow=im;});
+await import('./refinement.js?v=10');
 renderText();const previewRoute=new URLSearchParams(location.search).get('preview');if(previewRoute==='cave'){enterFailure(game);renderText();}else if(nodes.some(n=>n.id===previewRoute))openReader(previewRoute);requestAnimationFrame(animate);
