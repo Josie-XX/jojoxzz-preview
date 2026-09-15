@@ -59,7 +59,7 @@ html[lang=zh-CN] .quick-lettering-ready dialog[data-page=archive] .page-heading 
 [data-open=watch],[data-page=watch]{--section-ink:var(--section-watch-ink);--section-white:var(--section-watch-white)}
 html[lang=zh-CN] .portal-labels button{width:13.3cqw;height:4.4cqw}
 html[lang=zh-CN] .section-lettering-ready .portal-labels button{font-size:0;color:transparent}
-html[lang=zh-CN] .section-lettering-ready .portal-labels button:after{content:'';position:absolute;inset:0;background:var(--section-ink) center/contain no-repeat}
+html[lang=zh-CN] .section-lettering-ready .portal-labels button:after{content:'';position:absolute;inset:0;background:var(--section-ink) center/contain no-repeat;transform:scale(.8);transform-origin:right center}
 html[lang=zh-CN] .section-lettering-ready dialog:not([data-page=archive]) .page-heading h2{position:relative;width:min(480px,75vw);height:min(150px,24vw);font-size:0!important;color:transparent!important;text-shadow:none;transform:none}
 html[lang=zh-CN] .section-lettering-ready dialog:not([data-page=archive]) .page-heading h2:after{content:'';position:absolute;inset:0;background:var(--section-white) left center/contain no-repeat}
 html[lang=zh-CN] .section-lettering-ready #reader.trail-reader .trail-heading h2{position:relative;width:clamp(140px,18vw,245px);height:clamp(44px,5.7vw,78px);font-size:0;color:transparent;text-shadow:none;transform:none}
