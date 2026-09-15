@@ -561,6 +561,17 @@
                 "Here’s a screenshot from 2010s Wonders."
               ],
               "image": "assets/gamejam.png"
+            },
+            {
+              "title": [
+                "2010s Wonders · 游戏画面",
+                "2010s Wonders · Gameplay"
+              ],
+              "body": [
+                "",
+                ""
+              ],
+              "image": "assets/wonders-gameplay-02.png"
             }
           ]
         },
@@ -599,6 +610,39 @@
                 "我写了敌人发现、追踪和攻击玩家的行为，也做了远程投射物、受击反馈和 Boss 的多种攻击。玩家移动、靠近或出招时，敌人都要有对应的反应。",
                 "I implemented enemy detection, pursuit and attacks, along with ranged projectiles, hit feedback and multiple boss attacks. Enemies need to respond when the player moves, approaches or attacks."
               ]
+            },
+            {
+              "title": [
+                "Elemental Ruins · 游戏画面 1/3",
+                "Elemental Ruins · Screenshot 1/3"
+              ],
+              "body": [
+                "",
+                ""
+              ],
+              "image": "assets/elemental-ruins-01.png"
+            },
+            {
+              "title": [
+                "Elemental Ruins · 游戏画面 2/3",
+                "Elemental Ruins · Screenshot 2/3"
+              ],
+              "body": [
+                "",
+                ""
+              ],
+              "image": "assets/elemental-ruins-02.png"
+            },
+            {
+              "title": [
+                "Elemental Ruins · 游戏画面 3/3",
+                "Elemental Ruins · Screenshot 3/3"
+              ],
+              "body": [
+                "",
+                ""
+              ],
+              "image": "assets/elemental-ruins-03.png"
             }
           ]
         },
