@@ -8,6 +8,15 @@ trackTask('lettering',async()=>{if(!await prepareLettering())throw new Error('Le
 const stage=document.createElement('div');stage.className='stage-copy';stage.innerHTML=`<div class="home-title"><h1 data-zh="你被变成了<br>百变怪！" data-en="You became<br>a Ditto!">你被变成了<br>百变怪！</h1><p class="signature">Josie Z.</p><p class="tags" data-zh="游戏 / 数学 / 创作 / AI" data-en="Games / Math / Creation / AI"></p></div><div class="cave-title"><h1 data-zh="小心！" data-en="Watch out!">小心！</h1><p data-zh="Z 变身利欧路 · 空格碎岩" data-en="Z to become Riolu · Space to smash rocks"></p></div>`;$('.map-wrap').append(stage);
 if(siteConfig?.home){const h=siteConfig.home;stage.querySelector('.signature').textContent=h.name;for(const [selector,values] of [['.home-title h1',h.headline],['.tags',h.tags],['.cave-title h1',siteConfig.cave.headline]]){const el=stage.querySelector(selector);const safe=v=>v.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));el.dataset.zh=safe(values[0]);el.dataset.en=safe(values[1]);}document.body.classList.toggle('custom-home-title',h.headline[0]!=='你被变成了\n百变怪！');document.body.classList.toggle('custom-cave-title',siteConfig.cave.headline[0]!=='小心！');}
 const links=document.createElement('div');links.className='portal-labels';links.innerHTML=nodes.map((n,i)=>`<button data-open="${n.id}" style="top:${(492-i*68-42)/648*100}%" data-zh="${n.zh}" data-en="${n.en}">${n.zh}</button>`).join('');$('.map-wrap').append(links);
+const quickDescriptions=[
+ ['关于我 · 教育背景 · 联系方式','About me · Education · Contact'],
+ ['数学建模 · AI · 研究项目','Math modeling · AI · Research'],
+ ['游戏制作 · 游戏记录','Game development · Play records'],
+ ['电影 · 阅读 · 音乐 · 其他兴趣','Films · Books · Music · Interests']
+];
+const quickFind=document.createElement('nav');quickFind.className='quick-find';quickFind.setAttribute('aria-labelledby','quick-find-title');
+quickFind.innerHTML='<h2 id="quick-find-title" data-zh="快速查找！" data-en="Quick find!">快速查找！</h2><div class="quick-find-links">'+nodes.map((n,i)=>`<button type="button" data-open="${n.id}"><strong data-zh="${n.zh}" data-en="${n.en}">${n.zh}</strong><span class="quick-arrow" aria-hidden="true">↗</span><span class="quick-description" data-zh="${quickDescriptions[i][0]}" data-en="${quickDescriptions[i][1]}">${quickDescriptions[i][0]}</span></button>`).join('')+'</div>';
+stage.append(quickFind);
 document.querySelector('header').innerHTML='<nav><button data-open="hi" data-zh="Hi了吗" data-en="Say Hi">Hi了吗</button><button data-open="archive" data-zh="目录" data-en="Index">目录</button></nav>';
 // Preserve the original language handler while relocating the control.
 const language=document.createElement('button');language.id='language';language.onclick=()=>{lang=lang==='zh'?'en':'zh';localStorage.setItem('josie-language',lang);renderText();};document.querySelector('header nav').append(language);
@@ -35,4 +44,4 @@ const baseRender=renderText;
 renderText=()=>{baseRender();document.title='Josie Z. · '+t('个人主页','Personal Website');$('.intro h1').textContent='';language.textContent=lang==='zh'?'Language · EN':'Language · 中文';};
 // Detail pages are full-screen, independently scrollable; homepage remains fixed.
 const baseOpen=openReader;openReader=id=>{baseOpen(id);$('#reader').scrollTop=0;};
-await import('./trail.js?v=10');
+await import('./trail.js?v=11');

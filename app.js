@@ -1,4 +1,4 @@
-const roomScript=document.createElement('script');roomScript.type='module';roomScript.src='pixel.js?v=10';document.head.append(roomScript);
+const roomScript=document.createElement('script');roomScript.type='module';roomScript.src='pixel.js?v=11';document.head.append(roomScript);
 const $=s=>document.querySelector(s);let lang=localStorage.getItem('josie-language')||'zh',active=null;const tr=(zh,en)=>lang==='zh'?zh:en;
 const nodes=[{id:'games',zh:'游戏之境',en:'Playground',sub:'PLAY & MAKE',x:.60,y:.29,r:78},{id:'research',zh:'思维实验室',en:'Thought lab',sub:'MATH & MACHINE',x:.30,y:.48,r:70},{id:'courses',zh:'知识轨道',en:'Learning orbit',sub:'LEARN & CONNECT',x:.73,y:.60,r:64},{id:'life',zh:'日常引力',en:'Little things',sub:'LIFE & CURIOSITY',x:.45,y:.79,r:59},{id:'about',zh:'关于卓羲',en:'Hello, Josie',sub:'A LITTLE ABOUT ME',x:.83,y:.16,r:44}];
 const entry=(zh,en,desc,descEn,meta='',image='')=>({zh,en,desc,descEn,meta,image});

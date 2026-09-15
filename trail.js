@@ -3,7 +3,7 @@ import {trailRecords} from './trail-data.js?v=10';
 import {createStory,turnStory,tickStory,storyDuration} from './story-stack.mjs?v=10';
 import {siteConfig,authoredWorld} from './site-config.js?v=10';
 import {watchAsset,assetNotice,bindGameButton,fallbackSheet} from './asset-loader.mjs?v=10';
-const css=document.createElement('link');css.rel='stylesheet';css.href='trail.css?v=10';document.head.append(css);
+const css=document.createElement('link');css.rel='stylesheet';css.href='trail.css?v=11';document.head.append(css);
 const reader=document.querySelector('#reader'),pane=document.querySelector('#reader-content');
 const routes=['hi','make','play','watch'],states=new Map(),held=new Set();
 let current=null,canvas=null,context=null,popup=null,jump=false,last=0,accumulator=0,nearId=null,disposed=false;
