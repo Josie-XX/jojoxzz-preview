@@ -1,0 +1,13 @@
+:root{--ink:#294d73;--muted:#6b86a2;--paper:#f5faff;--line:#cbdff0}
+body{background:#f2f8fe;font-family:Georgia,'Songti SC',serif}
+header{border-color:#d1e1ee}.name{font:20px Georgia,'Songti SC',serif}
+.intro{gap:16px;justify-content:flex-start}.intro:after{display:none}.intro h1{margin-right:auto!important;font:400 26px Georgia,'Songti SC',serif!important}
+.world-section .map-wrap{border:1px solid #ccdfef;border-radius:18px;box-shadow:0 8px 30px #a7c5df16}
+#flight-pause,#flight-boost{border:1px solid #b9d3e9;border-radius:16px;background:#f8fcffe8;color:#35597a;font:14px Georgia,'Songti SC',serif;padding:8px 13px}
+#flight-state{font:13px Arial,'PingFang SC',sans-serif;color:#607d98;min-width:70px;text-align:right}
+#flight-boost{position:absolute;right:15px;top:15px;touch-action:none}#flight-boost:active{background:#d5e8fa}
+.world-section .map-wrap #room-hint{font:14px Georgia,'Songti SC',serif;background:#f7fbfff0;border:1px solid #cbdfee;border-radius:15px;color:#355577}
+.reader-ditto{display:block;width:104px;height:104px;object-fit:contain;margin:0 auto 20px}
+#reader{background:#f7fbff}#reader-content h2,#reader-content h3{font-family:Georgia,'Songti SC',serif}
+.entry p,.lead,.course-list{font-family:Arial,'PingFang SC',sans-serif}
+@media(max-width:600px){.intro{gap:8px}.intro h1{font-size:19px!important}#flight-state{display:none}#flight-pause{font-size:12px;padding:6px 9px}.world-section .map-wrap #room-hint{font-size:12px;max-width:60%}#flight-boost{top:10px;right:10px;font-size:12px}.reader-ditto{width:88px;height:88px}}

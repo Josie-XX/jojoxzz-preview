@@ -1,0 +1,4 @@
+Native pixel sprites: Pokemon FireRed / LeafGreen (all 151 Kanto species).
+Source: https://github.com/PokeAPI/sprites/tree/master/sprites/pokemon/versions/generation-iii/firered-leafgreen
+Berries: https://github.com/PokeAPI/sprites/tree/master/sprites/items
+Pokemon characters and artwork belong to their respective rights holders, including Nintendo, Creatures and GAME FREAK. Repository availability is not a commercial-use rights clearance. Local unpublished preview only.

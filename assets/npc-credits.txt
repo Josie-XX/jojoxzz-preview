@@ -1,0 +1,5 @@
+NPC sprites: Pikachu (25), Squirtle (7), Bulbasaur (1), Eevee (133), Charizard (6), Jigglypuff (39).
+Retrieved unmodified from https://github.com/PokeAPI/sprites/tree/master/sprites/pokemon
+Direct source pattern: https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{id}.png
+Pokémon and character artwork belong to their respective rights holders. These assets are not claimed as original artwork or as cleared for commercial use. Current website is a private local preview.
+Image generation was attempted but unsuccessful; no generated NPC artwork is used.

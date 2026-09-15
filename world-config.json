@@ -1,0 +1,795 @@
+{
+  "version": 1,
+  "home": {
+    "name": "Josie Z.",
+    "tags": [
+      "游戏 / 数学 / 创作 / AI",
+      "Games / Math / Creation / AI"
+    ],
+    "headline": [
+      "你被变成了\n百变怪！",
+      "You became\na Ditto!"
+    ]
+  },
+  "routes": {
+    "hi": {
+      "theme": 0,
+      "width": 2570,
+      "terrain": [
+        {
+          "x": 0,
+          "y": 526,
+          "w": 510,
+          "base": true
+        },
+        {
+          "x": 626,
+          "y": 526,
+          "w": 524,
+          "base": true
+        },
+        {
+          "x": 1354,
+          "y": 526,
+          "w": 436,
+          "base": true
+        },
+        {
+          "x": 1926,
+          "y": 526,
+          "w": 644,
+          "base": true
+        },
+        {
+          "x": 1214,
+          "y": 494,
+          "w": 76,
+          "platform": true
+        },
+        {
+          "x": 930,
+          "y": 462,
+          "w": 124,
+          "platform": false,
+          "solid": true
+        },
+        {
+          "x": 1482,
+          "y": 462,
+          "w": 124,
+          "platform": true,
+          "solid": false
+        },
+        {
+          "x": 1570,
+          "y": 398,
+          "w": 124,
+          "platform": true,
+          "solid": false
+        }
+      ],
+      "finish": {
+        "flagX": 2230,
+        "portalX": 2475,
+        "y": 526
+      },
+      "decorations": [],
+      "items": [
+        {
+          "id": "hello",
+          "x": 320,
+          "y": 526,
+          "kind": "npc",
+          "npc": 1,
+          "berry": null,
+          "title": [
+            "联系 Josie Z.",
+            "Contact Josie Z."
+          ],
+          "body": [
+            "中文名是赵卓羲。欢迎来我的主页。想交流游戏、创作或其他有趣的事情，可以通过下面的链接找到我。",
+            "My Chinese name is Zhao Zhuoxi. Welcome to my website. If you’d like to talk about games, creative work or something else that interests you, you can find me below."
+          ],
+          "cards": [
+            {
+              "title": [
+                "Hi，我是 Josie Z.",
+                "Hi, I’m Josie Z."
+              ],
+              "body": [
+                "中文名是赵卓羲。欢迎来我的主页。想交流游戏、创作或其他有趣的事情，可以通过下面的链接找到我。",
+                "My Chinese name is Zhao Zhuoxi. Welcome to my website. If you’d like to talk about games, creative work or something else that interests you, you can find me below."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "about-josie",
+          "x": 960,
+          "y": 462,
+          "kind": "item",
+          "npc": null,
+          "berry": 0,
+          "title": [
+            "数学、游戏，还有很多兴趣",
+            "Math, games, and many interests"
+          ],
+          "body": [
+            "我学数学，喜欢玩游戏，也想自己做游戏。平时感兴趣的东西很多，文学、建筑、音乐、AI，都想多了解一点。",
+            "I study mathematics, love playing games, and want to make my own. I’m curious about a lot of things—literature, architecture, music and AI, to name a few."
+          ],
+          "cards": [
+            {
+              "title": [
+                "关于我",
+                "A little about me"
+              ],
+              "body": [
+                "我学数学，喜欢玩游戏，也想自己做游戏。平时感兴趣的东西很多，文学、建筑、音乐、AI，都想多了解一点。",
+                "I study mathematics, love playing games, and want to make my own. I’m curious about a lot of things—literature, architecture, music and AI, to name a few."
+              ]
+            },
+            {
+              "title": [
+                "不只玩，也想做",
+                "Playing—and making"
+              ],
+              "body": [
+                "除了玩游戏，我也在做游戏。用 Godot 做过平台跳跃，用 Unity 写过敌人和 Boss 的行为。接下来还想继续做。",
+                "Besides playing games, I make them too. I’ve worked on a Godot platformer and written enemy and boss behavior in Unity. I want to keep making more."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "education",
+          "x": 1600,
+          "y": 398,
+          "kind": "npc",
+          "npc": 25,
+          "berry": null,
+          "title": [
+            "我的学习背景",
+            "My academic background"
+          ],
+          "body": [
+            "我在武汉大学学习应用数学，接触了数学与统计相关的课程。这是我接触计算、AI 和游戏制作的知识基础。",
+            "I studied applied mathematics at Wuhan University, including mathematics and statistics. That foundation supports my exploration of computing, AI and game-making."
+          ],
+          "cards": [
+            {
+              "title": [
+                "数学基础",
+                "A foundation in mathematics"
+              ],
+              "body": [
+                "我在武汉大学学习应用数学，接触了数学与统计相关的课程。这是我接触计算、AI 和游戏制作的知识基础。",
+                "I studied applied mathematics at Wuhan University, including mathematics and statistics. That foundation supports my exploration of computing, AI and game-making."
+              ]
+            },
+            {
+              "title": [
+                "学校经历",
+                "My schools"
+              ],
+              "body": [
+                "高中就读于上海交大附中。在武汉大学时，也参与过学生组织和志愿活动。现在在哥伦比亚大学学习运筹学。",
+                "I attended the High School Affiliated to Shanghai Jiao Tong University. At Wuhan University I also took part in student organizations and volunteering. I now study operations research at Columbia University."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "make": {
+      "theme": 1,
+      "width": 2810,
+      "terrain": [
+        {
+          "x": 0,
+          "y": 526,
+          "w": 545,
+          "base": true
+        },
+        {
+          "x": 781,
+          "y": 526,
+          "w": 484,
+          "base": true
+        },
+        {
+          "x": 1413,
+          "y": 526,
+          "w": 572,
+          "base": true
+        },
+        {
+          "x": 2245,
+          "y": 526,
+          "w": 565,
+          "base": true
+        },
+        {
+          "x": 625,
+          "y": 462,
+          "w": 76,
+          "platform": true
+        },
+        {
+          "x": 2077,
+          "y": 462,
+          "w": 76,
+          "platform": true
+        },
+        {
+          "x": 202,
+          "y": 462,
+          "w": 92,
+          "platform": true,
+          "solid": false
+        },
+        {
+          "x": 290,
+          "y": 398,
+          "w": 92,
+          "platform": true,
+          "solid": false
+        },
+        {
+          "x": 834,
+          "y": 462,
+          "w": 92,
+          "platform": true,
+          "solid": false
+        },
+        {
+          "x": 922,
+          "y": 398,
+          "w": 92,
+          "platform": true,
+          "solid": false
+        },
+        {
+          "x": 1010,
+          "y": 334,
+          "w": 92,
+          "platform": true,
+          "solid": false
+        },
+        {
+          "x": 1730,
+          "y": 462,
+          "w": 92,
+          "platform": true,
+          "solid": false
+        }
+      ],
+      "finish": {
+        "flagX": 2470,
+        "portalX": 2715,
+        "y": 526
+      },
+      "decorations": [],
+      "items": [
+        {
+          "id": "thesis",
+          "x": 320,
+          "y": 398,
+          "kind": "npc",
+          "npc": 4,
+          "berry": null,
+          "title": [
+            "数学与建模",
+            "Mathematics & modeling"
+          ],
+          "body": [
+            "我在武汉大学学应用数学。本科毕业论文做的是德国天然气网络流量预测，用时间序列模型来处理这个问题。",
+            "I studied applied mathematics at Wuhan University. For my undergraduate thesis, I used time-series models to forecast flows in the German natural-gas network."
+          ],
+          "cards": [
+            {
+              "title": [
+                "从数学到数据",
+                "From mathematics to data"
+              ],
+              "body": [
+                "我在武汉大学学应用数学。本科毕业论文做的是德国天然气网络流量预测，用时间序列模型来处理这个问题。",
+                "I studied applied mathematics at Wuhan University. For my undergraduate thesis, I used time-series models to forecast flows in the German natural-gas network."
+              ]
+            },
+            {
+              "title": [
+                "做过的尝试",
+                "Things I’ve tried"
+              ],
+              "body": [
+                "论文里，我比较了多种预测模型，做数据处理、训练和滚动评估。我也接触过优化建模和量子机器学习，研究过量子线路中的贫瘠高原问题。",
+                "For my thesis, I compared forecasting models and worked on data processing, training and rolling evaluation. I’ve also explored optimization and quantum machine learning, including barren plateaus in quantum circuits."
+              ]
+            },
+            {
+              "title": [
+                "用路径画 Kirby",
+                "Drawing Kirby with a route"
+              ],
+              "body": [
+                "优化项目里，我做过资源分配和路径相关的问题，还用旅行商路径画过 Kirby。",
+                "My optimization projects have included resource allocation and routing. I also used a travelling-salesperson route to draw Kirby."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "toxbuster",
+          "x": 1040,
+          "y": 334,
+          "kind": "item",
+          "npc": null,
+          "berry": 6,
+          "title": [
+            "ToxBuster · 游戏聊天识别",
+            "ToxBuster · game chat detection"
+          ],
+          "body": [
+            "我做过 ToxBuster 相关的复现和实验，识别游戏聊天中的有害语言。游戏里的聊天常常很短，也依赖上下文，不能只看某一个词。",
+            "I reproduced and ran experiments around ToxBuster to detect toxic language in game chat. Messages are often short and context-dependent, so a single word doesn’t always tell the whole story."
+          ],
+          "cards": [
+            {
+              "title": [
+                "ToxBuster",
+                "ToxBuster"
+              ],
+              "body": [
+                "我做过 ToxBuster 相关的复现和实验，识别游戏聊天中的有害语言。游戏里的聊天常常很短，也依赖上下文，不能只看某一个词。",
+                "I reproduced and ran experiments around ToxBuster to detect toxic language in game chat. Messages are often short and context-dependent, so a single word doesn’t always tell the whole story."
+              ]
+            },
+            {
+              "title": [
+                "我做了什么",
+                "What I worked on"
+              ],
+              "body": [
+                "我在实验里关注聊天上下文对识别结果的影响，也比较模型的表现。这个项目主要做的是语言识别，不是游戏玩法。",
+                "In my experiments, I looked at how chat context affects detection and compared model performance. This project focused on language detection rather than gameplay."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "pokemon-rl",
+          "x": 1760,
+          "y": 462,
+          "kind": "npc",
+          "npc": 63,
+          "berry": null,
+          "title": [
+            "RL · 宝可梦自动对战",
+            "RL · automated Pokémon battles"
+          ],
+          "body": [
+            "我做过一个宝可梦自动对战的强化学习项目，让智能体在回合制对战里学习怎么决策。",
+            "I worked on a reinforcement-learning project for automated Pokémon battles, training an agent to make decisions in turn-based combat."
+          ],
+          "cards": [
+            {
+              "title": [
+                "让智能体学会对战",
+                "Teaching an agent to battle"
+              ],
+              "body": [
+                "我做过一个宝可梦自动对战的强化学习项目，让智能体在回合制对战里学习怎么决策。",
+                "I worked on a reinforcement-learning project for automated Pokémon battles, training an agent to make decisions in turn-based combat."
+              ]
+            },
+            {
+              "title": [
+                "不同的决策方式",
+                "Different ways to make decisions"
+              ],
+              "body": [
+                "我比较了 DQN、Double DQN 和 Dueling 等方法，观察它们面对不同对手时的表现，也研究了奖励设计会怎样影响它们的选择。",
+                "I compared methods including DQN, Double DQN and dueling architectures, looked at performance against different opponents, and studied how reward design affects their choices."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "play": {
+      "theme": 2,
+      "width": 2990,
+      "terrain": [
+        {
+          "x": 0,
+          "y": 526,
+          "w": 570,
+          "base": true
+        },
+        {
+          "x": 850,
+          "y": 526,
+          "w": 500,
+          "base": true
+        },
+        {
+          "x": 1594,
+          "y": 526,
+          "w": 536,
+          "base": true
+        },
+        {
+          "x": 2430,
+          "y": 526,
+          "w": 560,
+          "base": true
+        },
+        {
+          "x": 625,
+          "y": 478,
+          "w": 66,
+          "platform": true
+        },
+        {
+          "x": 750,
+          "y": 438,
+          "w": 64,
+          "platform": true
+        },
+        {
+          "x": 1405,
+          "y": 478,
+          "w": 66,
+          "platform": true
+        },
+        {
+          "x": 1494,
+          "y": 438,
+          "w": 64,
+          "platform": true
+        },
+        {
+          "x": 2185,
+          "y": 478,
+          "w": 66,
+          "platform": true
+        },
+        {
+          "x": 2330,
+          "y": 438,
+          "w": 64,
+          "platform": true
+        },
+        {
+          "x": 202,
+          "y": 470,
+          "w": 80,
+          "platform": true,
+          "solid": false
+        },
+        {
+          "x": 290,
+          "y": 462,
+          "w": 80,
+          "platform": true,
+          "solid": false
+        },
+        {
+          "x": 806,
+          "y": 470,
+          "w": 80,
+          "platform": true,
+          "solid": false
+        },
+        {
+          "x": 894,
+          "y": 414,
+          "w": 80,
+          "platform": true,
+          "solid": false
+        },
+        {
+          "x": 982,
+          "y": 358,
+          "w": 80,
+          "platform": true,
+          "solid": false
+        },
+        {
+          "x": 1070,
+          "y": 350,
+          "w": 80,
+          "platform": true,
+          "solid": false
+        },
+        {
+          "x": 1762,
+          "y": 470,
+          "w": 80,
+          "platform": true,
+          "solid": false
+        },
+        {
+          "x": 1850,
+          "y": 414,
+          "w": 80,
+          "platform": true,
+          "solid": false
+        }
+      ],
+      "finish": {
+        "flagX": 2650,
+        "portalX": 2895,
+        "y": 526
+      },
+      "decorations": [],
+      "items": [
+        {
+          "id": "game-making",
+          "x": 320,
+          "y": 462,
+          "kind": "npc",
+          "npc": 7,
+          "berry": null,
+          "title": [
+            "2010s Wonders · Game Jam",
+            "2010s Wonders · Game Jam"
+          ],
+          "body": [
+            "这是我参与制作的 Godot 复古平台跳跃游戏。两周的团队 Game Jam 里，我参与了关卡设计、玩法调整和协作。",
+            "This is a retro Godot platformer I helped make. During the two-week team game jam, I contributed to level design, gameplay iteration and collaboration."
+          ],
+          "cards": [
+            {
+              "title": [
+                "2010s Wonders",
+                "2010s Wonders"
+              ],
+              "body": [
+                "这是我参与制作的 Godot 复古平台跳跃游戏。两周的团队 Game Jam 里，我参与了关卡设计、玩法调整和协作。",
+                "This is a retro Godot platformer I helped make. During the two-week team game jam, I contributed to level design, gameplay iteration and collaboration."
+              ]
+            },
+            {
+              "title": [
+                "游戏画面",
+                "In the game"
+              ],
+              "body": [
+                "这是 2010s Wonders 的实际画面。",
+                "Here’s a screenshot from 2010s Wonders."
+              ],
+              "image": "assets/gamejam.png"
+            }
+          ]
+        },
+        {
+          "id": "elemental-ruins",
+          "x": 1100,
+          "y": 350,
+          "kind": "item",
+          "npc": null,
+          "berry": 12,
+          "title": [
+            "Elemental Ruins",
+            "Elemental Ruins"
+          ],
+          "body": [
+            "这是我们四个人用 Unity 和 C# 制作的 3D 动作 RPG。我主要负责敌人 AI 和战斗相关的实现。",
+            "This is a 3D action RPG our four-person team made with Unity and C#. I mainly worked on enemy AI and combat implementation."
+          ],
+          "cards": [
+            {
+              "title": [
+                "Elemental Ruins",
+                "Elemental Ruins"
+              ],
+              "body": [
+                "这是我们四个人用 Unity 和 C# 制作的 3D 动作 RPG。我主要负责敌人 AI 和战斗相关的实现。",
+                "This is a 3D action RPG our four-person team made with Unity and C#. I mainly worked on enemy AI and combat implementation."
+              ]
+            },
+            {
+              "title": [
+                "敌人和 Boss",
+                "Enemies and bosses"
+              ],
+              "body": [
+                "我写了敌人发现、追踪和攻击玩家的行为，也做了远程投射物、受击反馈和 Boss 的多种攻击。玩家移动、靠近或出招时，敌人都要有对应的反应。",
+                "I implemented enemy detection, pursuit and attacks, along with ranged projectiles, hit feedback and multiple boss attacks. Enemies need to respond when the player moves, approaches or attacks."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "game-tastes",
+          "x": 1880,
+          "y": 414,
+          "kind": "npc",
+          "npc": 23,
+          "berry": null,
+          "title": [
+            "我也喜欢玩游戏",
+            "I also love playing games"
+          ],
+          "body": [
+            "我会玩叙事游戏、RPG、卡牌和模拟经营，也玩 DOTA 和宝可梦。如果你有喜欢的游戏，欢迎推荐给我。",
+            "I play narrative games, RPGs, card games and simulation games, as well as DOTA and Pokémon. If you have a favorite, send me a recommendation."
+          ],
+          "cards": [
+            {
+              "title": [
+                "最近想玩什么？",
+                "What do you feel like playing?"
+              ],
+              "body": [
+                "我会玩叙事游戏、RPG、卡牌和模拟经营，也玩 DOTA 和宝可梦。如果你有喜欢的游戏，欢迎推荐给我。",
+                "I play narrative games, RPGs, card games and simulation games, as well as DOTA and Pokémon. If you have a favorite, send me a recommendation."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "watch": {
+      "theme": 3,
+      "width": 2010,
+      "terrain": [
+        {
+          "x": 0,
+          "y": 526,
+          "w": 525,
+          "base": true
+        },
+        {
+          "x": 669,
+          "y": 526,
+          "w": 536,
+          "base": true
+        },
+        {
+          "x": 1425,
+          "y": 526,
+          "w": 585,
+          "base": true
+        },
+        {
+          "x": 1277,
+          "y": 502,
+          "w": 76,
+          "platform": true
+        },
+        {
+          "x": 202,
+          "y": 478,
+          "w": 148,
+          "platform": false,
+          "solid": true
+        },
+        {
+          "x": 290,
+          "y": 430,
+          "w": 148,
+          "platform": false,
+          "solid": true
+        }
+      ],
+      "finish": {
+        "flagX": 1670,
+        "portalX": 1915,
+        "y": 526
+      },
+      "decorations": [],
+      "items": [
+        {
+          "id": "interests",
+          "x": 320,
+          "y": 430,
+          "kind": "npc",
+          "npc": 12,
+          "berry": null,
+          "title": [
+            "喜欢的事情不止一种",
+            "Many things to love"
+          ],
+          "body": [
+            "除了数学和游戏，我也喜欢文学、建筑和芭蕾，对不同的文化、宇宙相关的话题也很好奇。感兴趣的东西挺多，欢迎来跟我聊你喜欢的。",
+            "Besides mathematics and games, I like literature, architecture and ballet. I’m also curious about different cultures and the universe. I’m into quite a few things—come tell me what you like."
+          ],
+          "cards": [
+            {
+              "title": [
+                "爱好广泛",
+                "A wide range of interests"
+              ],
+              "body": [
+                "除了数学和游戏，我也喜欢文学、建筑和芭蕾，对不同的文化、宇宙相关的话题也很好奇。感兴趣的东西挺多，欢迎来跟我聊你喜欢的。",
+                "Besides mathematics and games, I like literature, architecture and ballet. I’m also curious about different cultures and the universe. I’m into quite a few things—come tell me what you like."
+              ]
+            },
+            {
+              "title": [
+                "创作与 AI",
+                "Creative work and AI"
+              ],
+              "body": [
+                "我喜欢创作，也对 AI 很感兴趣。尤其想多试试 AI 和游戏结合起来能做什么。",
+                "I enjoy making things and I’m interested in AI. I’d especially like to try more ways of using AI in games."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "singing",
+          "x": 1000,
+          "y": 526,
+          "kind": "item",
+          "npc": null,
+          "berry": 18,
+          "title": [
+            "还有，喜欢唱歌",
+            "And I like singing"
+          ],
+          "body": [
+            "唱歌也是我的爱好。有空直接约我 KTV！",
+            "I love singing too. If you’re free, let’s go to karaoke!"
+          ],
+          "cards": [
+            {
+              "title": [
+                "喜欢唱歌",
+                "I like singing"
+              ],
+              "body": [
+                "唱歌也是我的爱好。有空直接约我 KTV！",
+                "I love singing too. If you’re free, let’s go to karaoke!"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "cave": {
+    "headline": [
+      "小心！",
+      "Watch out!"
+    ],
+    "width": 1120,
+    "spawn": {
+      "x": 100,
+      "y": 560
+    },
+    "terrain": [
+      {
+        "x": 0,
+        "y": 560,
+        "w": 835,
+        "base": true
+      },
+      {
+        "x": 945,
+        "y": 560,
+        "w": 175,
+        "base": true
+      }
+    ],
+    "rocks": [
+      {
+        "id": "rock-0",
+        "x": 430,
+        "y": 560,
+        "title": [
+          "想学太多，不知道从哪开始",
+          "Too much to learn—where do I start?"
+        ],
+        "response": [
+          "我有点三分钟热度。刚开始自学 CS 和游戏开发时，看到什么都想学，但信息差很大，不知道从哪开始。收藏了很多教程，计划也排得很满，真正动手却没多少。后来我去找有经验的前辈聊，问他们怎么入门、哪些可以先放一放，再把目标缩小成眼前能做的一个功能。遇到不会的就查、就问，先把它做出来。我还是会分心，但比起重新列一份大计划，现在更愿意先做完手上的一点。",
+          "I tend to get excited about something and then lose steam. When I started teaching myself CS and game development, I wanted to learn everything, but I didn’t know where to begin or what I was missing. I saved lots of tutorials and made ambitious plans, yet did very little. Later, I talked with people who had more experience, asked how to get started and what could wait, and narrowed my goal to one small feature. When I got stuck, I looked things up or asked for help, then kept working until it worked. I still get distracted, but now I’d rather finish something small than write another huge plan."
+        ]
+      }
+    ],
+    "decorations": []
+  }
+}
