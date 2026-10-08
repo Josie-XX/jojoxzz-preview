@@ -1,9 +1,9 @@
 import {TW,TH,BASE,buildTrail,newWalker,nearestItem,advanceWalker,capturePose} from './trail-engine.mjs?v=10';
-import {trailRecords} from './trail-data.js?v=10';
+import {trailRecords} from './trail-data.js?v=18';
 import {createStory,turnStory,tickStory,storyDuration} from './story-stack.mjs?v=10';
 import {siteConfig,authoredWorld} from './site-config.js?v=10';
 import {watchAsset,assetNotice,bindGameButton,fallbackSheet} from './asset-loader.mjs?v=10';
-const css=document.createElement('link');css.rel='stylesheet';css.href='trail.css?v=11';document.head.append(css);
+const css=document.createElement('link');css.rel='stylesheet';css.href='trail.css?v=18';document.head.append(css);
 const reader=document.querySelector('#reader'),pane=document.querySelector('#reader-content');
 const routes=['hi','make','play','watch'],states=new Map(),held=new Set();
 let current=null,canvas=null,context=null,popup=null,jump=false,last=0,accumulator=0,nearId=null,disposed=false;
@@ -26,7 +26,7 @@ function clear(){held.clear();jump=false;}
 const npcNames=[['皮卡丘','Pikachu'],['杰尼龟','Squirtle'],['妙蛙种子','Bulbasaur'],['伊布','Eevee'],['喷火龙','Charizard'],['胖丁','Jigglypuff']];
 function closePopup(){if(!popup)return;const catalog=popup.catalog;popup=null;story=null;document.querySelector('.trail-modal')?.remove();document.querySelector('.scene-bubble')?.remove();if(catalog){clear();canvas?.focus({preventScroll:true});}}
 function showItem(item){if(!current||popup?.catalog||popup?.id===item.id)return;closePopup();popup=item;mark(item);current.walker.encounterLatch=item.id;
- const cards=item.cards?.length?item.cards:[{title:item.title,body:item.body,image:item.image}];
+ const cards=item.cards?.length?item.cards:[{title:item.title,body:item.body,image:item.image,video:item.video,poster:item.poster}];
  story={...createStory(cards.length,matchMedia('(prefers-reduced-motion: reduce)').matches),cards};
  const el=document.createElement('section');el.className='scene-bubble story-bubble';el.setAttribute('role','region');el.setAttribute('aria-label',tx(item.title));
  el.innerHTML=`<div class="bubble-top"><small>${esc(tx(item.title))}</small><button data-dismiss aria-label="${tr('关闭气泡','Close bubble')}">×</button></div><div class="story-deck" aria-live="polite"></div>${item.id==='hello'?'<div class="trail-contact"><a href="mailto:zzxjosie@gmail.com">Email ↗</a><a href="https://www.linkedin.com/in/josiezzx" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a><a href="https://github.com/Josie-XX" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div>':''}<div class="story-controls" ${cards.length===1?'hidden':''}><button data-prev>${tr('← 上一张','← Previous')}</button><span data-position role="status"></span><button data-auto></button><button data-next>${tr('下一张 →','Next →')}</button></div>`;
@@ -43,12 +43,14 @@ function updateStoryControls(){if(!story)return;const el=document.querySelector(
  el.querySelector('[data-next]').disabled=story.index===story.count-1;
  const auto=el.querySelector('[data-auto]');auto.disabled=story.index===story.count-1;auto.textContent=story.index===story.count-1?tr('已看完','Finished'):story.paused?tr('自动叠放','Auto-play'):tr('暂停叠放','Pause cards');auto.setAttribute('aria-pressed',String(!story.paused));
 }
+function videoPlaying(){const video=document.querySelector('.story-card.active video');return !!video&&!video.paused&&!video.ended;}
 function renderStory(){const deck=document.querySelector('.story-deck');if(!deck||!story)return;
- deck.innerHTML=story.cards.slice(Math.max(0,story.index-2),story.index+1).map((card,i,visible)=>{const depth=visible.length-1-i;return `<article class="story-card ${depth?'past':'active'}" style="--depth:${depth}" ${depth?'aria-hidden="true" inert':''}><h3>${esc(tx(card.title))}</h3><p>${esc(tx(card.body))}</p>${card.image?`<img src="${esc(card.image)}" alt="${esc(tx(card.title))}">`:''}</article>`;}).join('');
+ deck.innerHTML=story.cards.slice(Math.max(0,story.index-2),story.index+1).map((card,i,visible)=>{const depth=visible.length-1-i;return `<article class="story-card ${depth?'past':'active'}" style="--depth:${depth}" ${depth?'aria-hidden="true" inert':''}><h3>${esc(tx(card.title))}</h3>${card.video&&!depth?`<video class="project-video" controls playsinline preload="none" poster="${esc(card.poster||'')}" aria-label="${esc(tx(card.title))}"><source src="${esc(card.video)}" type="video/mp4"></video>`:''}<p>${esc(tx(card.body))}</p>${card.image?`<img src="${esc(card.image)}" alt="${esc(tx(card.title))}">`:''}</article>`;}).join('');
+ deck.querySelectorAll('video').forEach(video=>{video.addEventListener('play',clear);video.addEventListener('loadedmetadata',positionBubble);});
  updateStoryControls();positionBubble();
 }
 function advanceStory(dt){if(!story||!popup||popup.catalog)return;const el=document.querySelector('.story-bubble');
- const blocked=document.hidden||current.walker.paused||current.walker.gameOver||el?.matches(':hover')||el?.contains(document.activeElement);
+ const blocked=videoPlaying()||document.hidden||current.walker.paused||current.walker.gameOver||el?.matches(':hover')||el?.contains(document.activeElement);
  if(tickStory(story,dt,storyDuration(tx(story.cards[story.index].body)),blocked))renderStory();
 }
 function positionBubble(){const el=document.querySelector('.scene-bubble');if(!el||!current||!canvas||!popup||popup.catalog)return;const r=canvas.getBoundingClientRect(),scale=Math.min(r.width/TW,r.height/TH),offsetX=(r.width-TW*scale)/2,offsetY=(r.height-TH*scale)/2;const anchor=offsetX+(popup.x-current.walker.camera)*scale,width=Math.min(410,r.width-30);el.style.width=width+'px';el.style.left=Math.max(15,Math.min(r.width-width-15,anchor-width/2))+'px';const bottom=offsetY+(popup.y-(popup.kind==='npc'?65:20))*scale;el.style.top=Math.max(105,bottom-el.offsetHeight-18)+'px';el.style.setProperty('--tail',Math.max(20,Math.min(width-20,anchor-parseFloat(el.style.left)))+'px');}
@@ -76,6 +78,7 @@ reader.addEventListener('close',()=>{removeAssetNotice?.();removeAssetNotice=nul
 window.addEventListener('blur',clear);document.addEventListener('visibilitychange',()=>{clear();last=0;accumulator=0;});
 window.addEventListener('keydown',e=>{if(!reader.open||!current||e.ctrlKey||e.metaKey||e.altKey)return;const key=e.key.toLowerCase();
  if(popup?.catalog){if(key==='escape'){e.preventDefault();e.stopImmediatePropagation();if(!e.repeat)closePopup();}else if(key==='tab'){const all=[...document.querySelectorAll('.trail-modal button,.trail-modal a')];if(!all.length)return;const first=all[0],end=all.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();end.focus();}else if(!e.shiftKey&&document.activeElement===end){e.preventDefault();first.focus();}}else if(['arrowleft','arrowright','arrowup','a','d','w',' '].includes(key))e.preventDefault();return;}
+ if(e.target.closest?.('video'))return;
  if(current.walker.returning){e.preventDefault();return;}
  if(e.target.closest?.('.story-bubble button,.story-bubble a')&&[' ','enter'].includes(key))return;
  if(key==='escape'&&popup){e.preventDefault();e.stopImmediatePropagation();closePopup();return;}
@@ -110,7 +113,7 @@ function drawWorld(){if(!current||!canvas||!context)return;const {walker:w,world
  g.restore();if(w.paused){rect(0,0,TW,TH,'#eee9ff99');label(tr('已暂停 · P 继续','Paused · P to resume'),TW/2,TH/2,28);}
  const r=canvas.getBoundingClientRect(),dpr=Math.min(devicePixelRatio||1,2),cw=Math.round(r.width*dpr),ch=Math.round(r.height*dpr);if(canvas.width!==cw||canvas.height!==ch){canvas.width=cw;canvas.height=ch;}context.imageSmoothingEnabled=false;context.fillStyle=sky;context.fillRect(0,0,cw,ch);const s=Math.min(cw/TW,ch/TH);context.drawImage(surface,(cw-TW*s)/2,(ch-TH*s)/2,TW*s,TH*s);
 }
-function frame(t){const dt=last?Math.min((t-last)/1000,.07):0;last=t;if(reader.open&&current&&canvas){accumulator+=dt;while(accumulator>=1/120){const item=advanceWalker(current.walker,current.world,{left:held.has('left'),right:held.has('right'),run:held.has('run'),jump,blocked:!!popup?.catalog||document.hidden},1/120);jump=false;accumulator-=1/120;if(item?.type==='encounter')showItem(item.item);else if(item?.type==='capture'){closePopup();clear();}else if(item?.type==='home'){closePopup();clear();current.walker=newWalker();reader.close();break;}else if(item)lifeEvent(item);}if(!current||!canvas){requestAnimationFrame(frame);return;}const id=nearestItem(current.walker,current.world)?.id??null;if(id!==nearId)updateHUD();if(popup&&!popup.catalog&&(Math.abs(current.walker.x-popup.x)>160||Math.abs(current.walker.y-popup.y)>150))closePopup();advanceStory(dt);drawWorld();positionBubble();}else accumulator=0;requestAnimationFrame(frame);}
+function frame(t){const dt=last?Math.min((t-last)/1000,.07):0;last=t;if(reader.open&&current&&canvas){accumulator+=dt;while(accumulator>=1/120){const item=advanceWalker(current.walker,current.world,{left:held.has('left'),right:held.has('right'),run:held.has('run'),jump,blocked:!!popup?.catalog||videoPlaying()||document.hidden},1/120);jump=false;accumulator-=1/120;if(item?.type==='encounter')showItem(item.item);else if(item?.type==='capture'){closePopup();clear();}else if(item?.type==='home'){closePopup();clear();current.walker=newWalker();reader.close();break;}else if(item)lifeEvent(item);}if(!current||!canvas){requestAnimationFrame(frame);return;}const id=nearestItem(current.walker,current.world)?.id??null;if(id!==nearId)updateHUD();if(popup&&!popup.catalog&&(Math.abs(current.walker.x-popup.x)>160||Math.abs(current.walker.y-popup.y)>150))closePopup();advanceStory(dt);drawWorld();positionBubble();}else accumulator=0;requestAnimationFrame(frame);}
 requestAnimationFrame(frame);
 // Optional local image records. No invented viewing history or placeholder screenshots.
 fetch('trail-media.json',{cache:'no-store'}).then(r=>r.json()).then(extra=>{for(const id of ['play','watch']){if(siteConfig?.routes?.[id]||!Array.isArray(extra[id]))continue;for(const [i,record] of extra[id].entries()){if(!/^assets\/[a-zA-Z0-9_./-]+\.(png|jpg|jpeg|webp)$/i.test(record.image||'')||!Array.isArray(record.title)||record.title.length!==2)continue;data[id].push({id:record.id||`${id}-photo-${i}`,title:record.title,body:['',''],image:record.image,kind:'image'});}if(states.has(id))states.get(id).world=buildTrail(data[id],routes.indexOf(id));}}).catch(()=>{});

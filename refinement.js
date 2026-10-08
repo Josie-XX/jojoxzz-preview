@@ -59,4 +59,4 @@ const baseRender=renderText;
 renderText=()=>{baseRender();document.title='Josie Z. · '+t('个人主页','Personal Website');$('.intro h1').textContent='';language.textContent=lang==='zh'?'Language · EN':'Language · 中文';};
 // Detail pages are full-screen, independently scrollable; homepage remains fixed.
 const baseOpen=openReader;openReader=id=>{baseOpen(id);$('#reader').scrollTop=0;};
-await import('./trail.js?v=11');
+await import('./trail.js?v=18');

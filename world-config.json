@@ -647,9 +647,39 @@
           ]
         },
         {
-          "id": "game-tastes",
+          "id": "shock-chain-study",
           "x": 1880,
           "y": 414,
+          "kind": "npc",
+          "npc": 125,
+          "berry": null,
+          "title": [
+            "电击连锁战斗 · ShockChainStudy",
+            "ShockChainStudy · Chain Lightning"
+          ],
+          "body": [
+            "我用 UE5 和 C++ 做了一个第一人称电击连锁战斗原型，让电流在敌人之间传播，并加入了护盾、追踪机器人和敌人生成机制。从静态靶测试开始，我逐步把战斗逻辑、命中反馈和第三方美术资产整合成了一个可玩的科幻场景。",
+            "I built a first-person chain-lightning combat prototype in UE5 and C++, with electricity spreading between enemies, shields, pursuing robots and an enemy spawner. Starting with static test targets, I brought the combat logic, hit feedback and third-party art assets together into a playable sci-fi arena."
+          ],
+          "cards": [
+            {
+              "title": [
+                "电击连锁战斗 · ShockChainStudy",
+                "ShockChainStudy · Chain Lightning"
+              ],
+              "body": [
+                "我用 UE5 和 C++ 做了一个第一人称电击连锁战斗原型，让电流在敌人之间传播，并加入了护盾、追踪机器人和敌人生成机制。从静态靶测试开始，我逐步把战斗逻辑、命中反馈和第三方美术资产整合成了一个可玩的科幻场景。",
+                "I built a first-person chain-lightning combat prototype in UE5 and C++, with electricity spreading between enemies, shields, pursuing robots and an enemy spawner. Starting with static test targets, I brought the combat logic, hit feedback and third-party art assets together into a playable sci-fi arena."
+              ],
+              "video": "assets/shock-chain-demo.mp4",
+              "poster": "assets/shock-chain-poster.jpg"
+            }
+          ]
+        },
+        {
+          "id": "game-tastes",
+          "x": 2510,
+          "y": 526,
           "kind": "npc",
           "npc": 23,
           "berry": null,
